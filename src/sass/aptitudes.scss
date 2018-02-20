@@ -1,6 +1,23 @@
-.aptitude-block{
-    .aptitude-collection{
-        width:100%;
-        display:flex;
+.aptitude-block {
+    .aptitude-collection {
+        width:640px;
+        display: flex;
+        .aptitude-element {
+            width:80px;
+            .aptitude-name {
+                height:40px;
+                .aptitude-shorthand {
+                    text-align: center;
+                }
+                .aptitude-fullname {
+                    display:none;
+                    text-align: center;
+                }
+            }
+            .aptitude-value{
+                height:40px;
+                width:80px;
+            }
+        }
     }
 }
