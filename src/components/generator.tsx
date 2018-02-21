@@ -10,12 +10,22 @@ export class Generator extends React.Component<GeneratorProps, {}> {
     render() {
         return (
             <div className="generator">
-                This deals with the logic  
                 <div className="points">
-                    Some number of points left to spend
                 </div>
                 <Character value="Test" />
+                <input type="button" id="previous-step"></input>                
+                <input type="button" id="next-step"></input>
             </div>
         )
     }
+}
+
+function nextStep(currentStep:number)
+{
+    // do things
+}
+
+function previousStep(currentStep:number)
+{
+
 }

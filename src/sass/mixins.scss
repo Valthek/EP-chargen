@@ -1,0 +1,14 @@
+@mixin bordered-table($borderColor, $backgroundcolor, $width, $height) {
+    border: 1px solid $borderColor;
+    background-color: $backgroundcolor;
+    line-height: 34px;
+    height: $height;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    width: $width;
+    &:focus {
+        outline: none;
+    }
+}
