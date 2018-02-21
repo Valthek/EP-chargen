@@ -1,23 +1,46 @@
+@mixin bordered-table($borderColor, $backgroundcolor, $width, $height) {
+    border: 1px solid $borderColor;
+    background-color: $backgroundcolor;
+    line-height: 34px;
+    height: $height;
+    margin-right: -1px;
+    margin-top: -1px;
+    padding: 0;
+    text-align: center;
+    width: $width;
+    &:focus {
+        outline: none;
+    }
+}
+
 .aptitude-block {
+    margin: 10px;
     .aptitude-collection {
-        width:640px;
+        width: 640px;
         display: flex;
+        &:after {
+            clear: both;
+            content: "";
+            display: table;
+        }
         .aptitude-element {
-            width:80px;
+            width: 60px;
             .aptitude-name {
-                height:40px;
                 .aptitude-shorthand {
                     text-align: center;
+                    padding-top: 8px;
+                    text-transform: uppercase;
+                    @include bordered-table(#666, #F12, 59px, 30px);
                 }
                 .aptitude-fullname {
-                    display:none;
+                    display: none;
                     text-align: center;
                 }
             }
-            .aptitude-value{
-                height:40px;
-                width:80px;
+            .aptitude-value {
+                @include bordered-table(#999, #fff, 59px, 30px);
             }
         }
     }
 }
+

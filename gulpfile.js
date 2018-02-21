@@ -5,7 +5,7 @@ var webpack = require('webpack-stream');
 
 gulp.task('sass', function () {
   return gulp.src('./src/sass/index.scss')
-    .pipe(sass()) // Using gulp-sass
+    .pipe(sass()).on('error', sass.logError) // Using gulp-sass
     .pipe(gulp.dest('./dist/styling'))
     .pipe(bs.reload({ stream: true }));
 });

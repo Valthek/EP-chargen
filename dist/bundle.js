@@ -143,7 +143,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var aptitude_1 = __webpack_require__(5);
 var Character = /** @class */ (function (_super) {
     __extends(Character, _super);
     function Character() {
@@ -181,82 +180,38 @@ var Character = /** @class */ (function (_super) {
                     React.createElement("div", { className: "basics-key" }, "Motivations"),
                     React.createElement("input", { type: "text", className: "basics-value", defaultValue: this.props.value }))),
             React.createElement("div", { className: "aptitude-block" },
-                React.createElement(aptitude_1.Aptitude, { showAptitudeName: true, cognition: 15, coordination: 15, intuition: 15, reflexes: 15, savvy: 15, somatics: 15, willpower: 15 }),
-                React.createElement(aptitude_1.Aptitude, { showAptitudeName: false, cognition: 15, coordination: 15, intuition: 15, reflexes: 15, savvy: 15, somatics: 15, willpower: 15 }),
-                React.createElement(aptitude_1.Aptitude, { showAptitudeName: false, cognition: 15, coordination: 15, intuition: 15, reflexes: 15, savvy: 15, somatics: 15, willpower: 15 }))));
+                generateAptitudeLine(true, [15, 15, 15, 15, 15, 15, 15]),
+                generateAptitudeLine(false, [15, 15, 15, 15, 15, 15, 15]),
+                generateAptitudeLine(false, [15, 15, 15, 15, 15, 15, 15]))));
     };
     ;
     return Character;
 }(React.Component));
 exports.Character = Character;
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-// This 
-var Aptitude = /** @class */ (function (_super) {
-    __extends(Aptitude, _super);
-    function Aptitude() {
-        return _super !== null && _super.apply(this, arguments) || this;
+function generateAptitudeLine(showAptitudeName, basevalues) {
+    var aptitudeElements = [];
+    for (var i = 0; i < basevalues.length; i++) {
+        aptitudeElements.push(generateAptitudeElement(showAptitudeName, aptitudeValues[i].slice(0, 3), aptitudeValues[i], basevalues[i].toString()));
     }
-    Aptitude.prototype.render = function () {
-        return (React.createElement("div", { className: "aptitude-collection" },
-            React.createElement("div", { className: "aptitude-element" },
-                this.props.showAptitudeName ? React.createElement("div", { className: "aptitude-name" },
-                    React.createElement("div", { className: "aptitude-shorthand" }, "COG"),
-                    React.createElement("div", { className: "aptitude-fullname" }, "Cognition")) : null,
-                React.createElement("input", { type: "text", className: "aptitude-value", "default-value": "{this.props.cognition}" })),
-            React.createElement("div", { className: "aptitude-element" },
-                this.props.showAptitudeName ? React.createElement("div", { className: "aptitude-name" },
-                    React.createElement("div", { className: "aptitude-shorthand" }, "COO"),
-                    React.createElement("div", { className: "aptitude-fullname" }, "Coordination")) : null,
-                React.createElement("input", { type: "text", className: "aptitude-value", "default-value": "{this.props.coordination}" })),
-            React.createElement("div", { className: "aptitude-element" },
-                this.props.showAptitudeName ? React.createElement("div", { className: "aptitude-name" },
-                    React.createElement("div", { className: "aptitude-shorthand" }, "INT"),
-                    React.createElement("div", { className: "aptitude-fullname" }, "Intuition")) : null,
-                React.createElement("input", { type: "text", className: "aptitude-value", "default-value": "{this.props.intuition}" })),
-            React.createElement("div", { className: "aptitude-element" },
-                this.props.showAptitudeName ? React.createElement("div", { className: "aptitude-name" },
-                    React.createElement("div", { className: "aptitude-shorthand" }, "REF"),
-                    React.createElement("div", { className: "aptitude-fullname" }, "Reflexes")) : null,
-                React.createElement("input", { type: "text", className: "aptitude-value", "default-value": "{this.props.reflexes}" })),
-            React.createElement("div", { className: "aptitude-element" },
-                this.props.showAptitudeName ? React.createElement("div", { className: "aptitude-name" },
-                    React.createElement("div", { className: "aptitude-shorthand" }, "SAV"),
-                    React.createElement("div", { className: "aptitude-fullname" }, "Savvy")) : null,
-                React.createElement("input", { type: "text", className: "aptitude-value", "default-value": "{this.props.savvy}" })),
-            React.createElement("div", { className: "aptitude-element" },
-                this.props.showAptitudeName ? React.createElement("div", { className: "aptitude-name" },
-                    React.createElement("div", { className: "aptitude-shorthand" }, "SOM"),
-                    React.createElement("div", { className: "aptitude-fullname" }, "Somatics")) : null,
-                React.createElement("input", { type: "text", className: "aptitude-value", "default-value": "{this.props.somatics}" })),
-            React.createElement("div", { className: "aptitude-element" },
-                this.props.showAptitudeName ? React.createElement("div", { className: "aptitude-name" },
-                    React.createElement("div", { className: "aptitude-shorthand" }, "WIL"),
-                    React.createElement("div", { className: "aptitude-fullname" }, "Willpower")) : null,
-                React.createElement("input", { type: "text", className: "aptitude-value", "default-value": "{this.props.willpower}" }))));
-    };
-    ;
-    return Aptitude;
-}(React.Component));
-exports.Aptitude = Aptitude;
+    return (React.createElement("div", { className: "aptitude-collection" }, aptitudeElements));
+}
+function generateAptitudeElement(showAptitudeName, shorthand, fullName, value) {
+    return React.createElement("div", { className: "aptitude-element" },
+        showAptitudeName ? React.createElement("div", { className: "aptitude-name" },
+            React.createElement("div", { className: "aptitude-shorthand" }, shorthand),
+            React.createElement("div", { className: "aptitude-fullname" }, fullName)) : null,
+        React.createElement("input", { type: "text", className: "aptitude-value", defaultValue: value }));
+}
+var aptitudeValues;
+(function (aptitudeValues) {
+    aptitudeValues[aptitudeValues["cognition"] = 0] = "cognition";
+    aptitudeValues[aptitudeValues["coordination"] = 1] = "coordination";
+    aptitudeValues[aptitudeValues["intuition"] = 2] = "intuition";
+    aptitudeValues[aptitudeValues["reflexes"] = 3] = "reflexes";
+    aptitudeValues[aptitudeValues["savvy"] = 4] = "savvy";
+    aptitudeValues[aptitudeValues["somatics"] = 5] = "somatics";
+    aptitudeValues[aptitudeValues["willpower"] = 6] = "willpower";
+})(aptitudeValues || (aptitudeValues = {}));
 
 
 /***/ })
