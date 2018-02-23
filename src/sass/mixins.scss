@@ -1,6 +1,6 @@
-@mixin bordered-table($borderColor, $backgroundcolor, $width, $height) {
+@mixin bordered-table($borderColor, $backGroundColor, $focusColor, $width, $height) {
     border: 1px solid $borderColor;
-    background-color: $backgroundcolor;
+    background-color: $backGroundColor;
     line-height: 34px;
     height: $height;
     margin-right: -1px;
@@ -10,5 +10,6 @@
     width: $width;
     &:focus {
         outline: none;
+        background-color:$focusColor;
     }
 }

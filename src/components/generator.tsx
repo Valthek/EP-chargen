@@ -1,38 +1,41 @@
 import * as React from "react";
 
-import { CharacterComponent } from "./character-component";
+import CharacterComponent from "./character-component";
 import { Character } from "../models/character";
-
-export interface GeneratorProps { compiler: string; framework: string; }
 
 // 'HelloProps' describes the shape of props.
 // State is never set so we use the '{}' type.
-export class Generator extends React.Component<GeneratorProps, {}> {
-    char:Character = new Character();
+export default class Generator extends React.Component<any, any> {
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            step: 0
+        }
+    }
+    char: Character = new Character();
     render() {
         return (
             <div className="generator">
-                <div className="points">
-                </div>
-                <CharacterComponent value="Test" character={this.char}/>
-                <input type="button" id="previous-step"></input>                
-                <input type="button" id="next-step"></input>
+                <CharacterComponent value="Test" character={this.char} />
+                {this.state.step > 0 ? <button
+                    id="previous-step"
+                    onClick={e => this.changeStep(e, -1)}>
+                    Step back citizen </button> : null}
+                {this.state.step < 14 ? <button
+                    id="next-step"
+                    onClick={e => this.changeStep(e, 1)}>
+                    Move along citizen</button> : null}
             </div>
         )
     }
+
+    public changeStep(event: any, change: number): void {
+        let tempStep = this.state.step + change;
+        this.setState({ step: tempStep });
+    }
 }
 
-function nextStep(currentStep:number)
-{
-    // do things
-}
-
-function previousStep(currentStep:number)
-{
-
-}
-
-enum creationState{
+enum creationState {
     Background,
     Career,
     Interest,

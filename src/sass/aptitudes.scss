@@ -1,5 +1,5 @@
 @import 'mixins';
-
+@import 'color-palette';
 .aptitude-block {
     margin: 10px;
     .aptitude-collection {
@@ -17,17 +17,39 @@
                     text-align: center;
                     padding-top: 8px;
                     text-transform: uppercase;
-                    @include bordered-table(#666, #F12, 59px, 30px);
+                    @include bordered-table($aptitudeTableBorder, $aptitudeNameBackground, $aptitudeNameBackground, 59px, 30px);
                 }
                 .aptitude-fullname {
                     display: none;
                     text-align: center;
                 }
             }
-            .aptitude-value {
-                @include bordered-table(#999, #fff, 59px, 30px);
+        }
+        &:nth-child(odd) {
+            .line-prefix {
+                @include bordered-table($aptitudeValueBorder, $aptitudeValueBackground, $aptitudeValueFocus, 130px, 30px);
+                &.blank {
+                    background-color: $aptitudeValueOffset;
+                }
+            }
+            .aptitude-element {
+                .aptitude-value {
+                    @include bordered-table($aptitudeValueBorder, $aptitudeValueBackground, $aptitudeValueFocus, 59px, 30px);
+                }
+            }
+        }
+        &:nth-child(even) {
+            .line-prefix {
+                @include bordered-table($aptitudeValueBorder, $aptitudeValueOffsetBackground, $aptitudeValueOffsetFocus, 130px, 30px);
+                &.blank {
+                    background-color: $aptitudeValueOffset;
+                }
+            }
+            .aptitude-element {
+                .aptitude-value {
+                    @include bordered-table($aptitudeValueBorder, $aptitudeValueOffsetBackground, $aptitudeValueOffsetFocus, 59px, 30px);
+                }
             }
         }
     }
 }
-
