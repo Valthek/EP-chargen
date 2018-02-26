@@ -17,9 +17,10 @@ gulp.task('webpack', function(){
 });
 
 
-gulp.task('default', ['browser-sync'], function () {
+gulp.task('default', ['sass', 'webpack', 'browser-sync'], function () {
   gulp.watch('src/sass/*.scss', ['sass']);
-  gulp.watch('src/**/*.tsx', ['webpack']);
+  gulp.watch('src/**/*.tsx', ['webpack']);  
+  gulp.watch('src/**/*.ts', ['webpack']);
   gulp.watch("dist/bundle.js").on('change', bs.reload);
 });
 

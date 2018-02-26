@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -76,20 +76,63 @@ module.exports = React;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var ReactDOM = __webpack_require__(2);
-var generator_1 = __webpack_require__(3);
-ReactDOM.render(React.createElement(generator_1.default, { compiler: "TypeScript", framework: "React" }), document.getElementById("container"));
+var Aptitude = /** @class */ (function () {
+    function Aptitude(name, rating) {
+        this.fullName = name;
+        this.shortHand = name.slice(0, 3);
+        this.rating = rating;
+    }
+    return Aptitude;
+}());
+exports.Aptitude = Aptitude;
 
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var aptitude_1 = __webpack_require__(1);
+var DerivedStats = /** @class */ (function () {
+    function DerivedStats(finalAptitudes, isAsync, psiLevel, chiSleights) {
+        this.aptitudeChecks = [];
+        this.initiative = (finalAptitudes[2].rating + finalAptitudes[1].rating) / 5;
+        for (var i = 0; i < finalAptitudes.length; i++) {
+            this.aptitudeChecks[i] = new aptitude_1.Aptitude(finalAptitudes[i].fullName, finalAptitudes[i].rating * 3);
+        }
+        this.lucidity = finalAptitudes[5].rating * 2;
+        this.traumaThreshold = Math.round(this.lucidity / 5);
+        this.insanityRating = this.lucidity * 2;
+        this.infectionRating = isAsync ? (psiLevel * 10) + (chiSleights * 5) : 0;
+    }
+    return DerivedStats;
+}());
+exports.DerivedStats = DerivedStats;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var ReactDOM = __webpack_require__(4);
+var generator_1 = __webpack_require__(5);
+ReactDOM.render(React.createElement(generator_1.default, { compiler: "TypeScript", framework: "React" }), document.getElementById("container"));
+
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports) {
 
 module.exports = ReactDOM;
 
 /***/ }),
-/* 3 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -106,30 +149,84 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
-var character_component_1 = __webpack_require__(4);
-var character_1 = __webpack_require__(5);
+var character_component_1 = __webpack_require__(6);
+var character_1 = __webpack_require__(7);
+var derivedStats_1 = __webpack_require__(2);
 // 'HelloProps' describes the shape of props.
 // State is never set so we use the '{}' type.
 var Generator = /** @class */ (function (_super) {
     __extends(Generator, _super);
     function Generator(props) {
         var _this = _super.call(this, props) || this;
-        _this.char = new character_1.Character();
         _this.state = {
+            character: new character_1.Character("", "", "", "", false, 0),
             step: 0
         };
+        _this.handleCharacterChange = _this.handleCharacterChange.bind(_this);
         return _this;
     }
     Generator.prototype.render = function () {
         var _this = this;
         return (React.createElement("div", { className: "generator" },
-            React.createElement(character_component_1.default, { value: "Test", character: this.char }),
+            React.createElement(character_component_1.default, { character: this.state.character, handleCharacterChange: this.handleCharacterChange }),
             this.state.step > 0 ? React.createElement("button", { id: "previous-step", onClick: function (e) { return _this.changeStep(e, -1); } }, "Step back citizen ") : null,
             this.state.step < 14 ? React.createElement("button", { id: "next-step", onClick: function (e) { return _this.changeStep(e, 1); } }, "Move along citizen") : null));
     };
     Generator.prototype.changeStep = function (event, change) {
         var tempStep = this.state.step + change;
         this.setState({ step: tempStep });
+    };
+    // this method updates the character object when changes are observed by components
+    // this method is also shit and needs to be refactored but I haven't found an elegant way to do it
+    Generator.prototype.handleCharacterChange = function (event, attribute, index, objectAttribute) {
+        var tempChar = this.state.character;
+        var characterAttribute = tempChar[attribute];
+        var temp = characterAttribute.constructor.name;
+        switch (temp) {
+            case "String":
+                tempChar[attribute] = event.target.value;
+                break;
+            case "Number":
+                tempChar[attribute] = +event.target.value;
+                break;
+            case "Boolean":
+                tempChar[attribute] = !!event.target.value;
+                break;
+            case "Array":
+                characterAttribute = characterAttribute[index];
+                temp = characterAttribute.constructor.name;
+                switch (temp) {
+                    case "Aptitude":
+                        characterAttribute = characterAttribute[objectAttribute];
+                        temp = characterAttribute.constructor.name;
+                        if (temp.constructor.name == "number") {
+                            tempChar[attribute][index][objectAttribute] = +event.target.value;
+                        }
+                        else {
+                            tempChar[attribute][index][objectAttribute] = event.target.value;
+                        }
+                        break;
+                    case "Sleight":
+                        // not implemented
+                        break;
+                    case "Number":
+                        tempChar[attribute][index] = +event.target.value;
+                    case "String":
+                        tempChar[attribute][index] = event.target.value;
+                        break;
+                    case "Skill":
+                        break;
+                }
+                break;
+            case "Morph":
+                break;
+        }
+        tempChar = tempChar;
+        tempChar.finalAptitudes = tempChar.GetFinalAptitudes(tempChar.egoAptitudes, tempChar.morph);
+        tempChar.derivedStats = new derivedStats_1.DerivedStats(tempChar.finalAptitudes);
+        this.setState({ character: tempChar });
+    };
+    Generator.prototype.handleAttributeChange = function (event, index, attribute) {
     };
     return Generator;
 }(React.Component));
@@ -154,7 +251,7 @@ var creationState;
 
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -177,47 +274,53 @@ var CharacterComponent = /** @class */ (function (_super) {
         return _super.call(this, props) || this;
     }
     CharacterComponent.prototype.render = function () {
+        var _this = this;
         return (React.createElement("div", { className: "character" },
             React.createElement("div", { className: "character-basics" },
                 React.createElement("div", { className: "basics-element" },
                     React.createElement("div", { className: "basics-key" }, "Character"),
-                    React.createElement("input", { type: "text", className: "basics-value", defaultValue: this.props.character.name })),
+                    React.createElement("div", null,
+                        "Hello ",
+                        this.props.character.name),
+                    React.createElement("input", { type: "text", className: "basics-value", value: this.props.character.name, onChange: function (e) { return _this.props.handleCharacterChange(e, "name"); } })),
                 React.createElement("div", { className: "basics-element" },
                     React.createElement("div", { className: "basics-key" }, "Faction"),
-                    React.createElement("input", { type: "text", className: "basics-value", defaultValue: this.props.character.faction })),
+                    React.createElement("input", { type: "text", className: "basics-value", value: this.props.character.faction, onChange: function (e) { return _this.props.handleCharacterChange(e, "faction"); } })),
                 React.createElement("div", { className: "basics-element" },
                     React.createElement("div", { className: "basics-key" }, "Motivations"),
-                    React.createElement("input", { type: "text", className: "basics-value", defaultValue: this.props.character.motivation })),
+                    React.createElement("input", { type: "text", className: "basics-value", value: this.props.character.motivation, onChange: function (e) { return _this.props.handleCharacterChange(e, "motivation"); } })),
                 React.createElement("div", { className: "basics-element" },
                     React.createElement("div", { className: "basics-key" }, "Languages"),
-                    React.createElement("input", { type: "text", className: "basics-value", defaultValue: this.props.character.languages }))),
+                    React.createElement("input", { type: "text", className: "basics-value", value: this.props.character.languages, onChange: function (e) { return _this.props.handleCharacterChange(e, "languages"); } }))),
             React.createElement("div", { className: "aptitude-block" },
-                generateAptitudeLine(true, this.props.character.egoAptitudes, "Ego"),
-                generateAptitudeLine(false, this.props.character.morph.aptitudes, "Morph"),
-                generateAptitudeLine(false, this.props.character.finalAptitudes, "Final"))));
+                this.generateAptitudeLine(true, this.props.character.egoAptitudes, "Ego", "egoAptitudes"),
+                this.generateAptitudeLine(false, this.props.character.morph.aptitudes, "Morph", "morph", "aptitudes"),
+                this.generateAptitudeLine(false, this.props.character.finalAptitudes, "Final", "finalAptitudes"))));
     };
     ;
+    CharacterComponent.prototype.generateAptitudeLine = function (showAptitudeName, aptitudes, linePrefix, characterAttribute, characterObjectAttribute) {
+        var _this = this;
+        var aptitudeElements = aptitudes.map(function (number, index) {
+            return _this.generateAptitudeElement(showAptitudeName, index, aptitudeValues[index], aptitudes[index].rating.toString(), characterAttribute, characterObjectAttribute);
+        });
+        return (React.createElement("div", { className: "aptitude-collection" },
+            React.createElement("div", { className: "prefix" },
+                showAptitudeName ? React.createElement("div", { className: "line-prefix blank" }) : null,
+                linePrefix ? React.createElement("div", { className: "line-prefix" }, linePrefix) : null),
+            aptitudeElements));
+    };
+    // key is a unique identifier so React can properly update certain parts
+    CharacterComponent.prototype.generateAptitudeElement = function (showAptitudeName, key, fullName, value, characterAttribute, characterObjectAttribute) {
+        var _this = this;
+        return (React.createElement("div", { className: "aptitude-element", key: key },
+            showAptitudeName ? React.createElement("div", { className: "aptitude-name" },
+                React.createElement("div", { className: "aptitude-shorthand" }, fullName.slice(0, 3)),
+                React.createElement("div", { className: "aptitude-fullname" }, fullName)) : null,
+            React.createElement("input", { type: "text", className: "aptitude-value", value: value, onChange: function (e) { return _this.props.handleCharacterChange(e, characterAttribute, key, "rating"); } })));
+    };
     return CharacterComponent;
 }(React.Component));
 exports.default = CharacterComponent;
-function generateAptitudeLine(showAptitudeName, aptitudes, linePrefix) {
-    var aptitudeElements = aptitudes.map(function (number, index) {
-        return generateAptitudeElement(showAptitudeName, index, aptitudeValues[index].slice(0, 3), aptitudeValues[index], aptitudes[index].rating.toString());
-    });
-    return (React.createElement("div", { className: "aptitude-collection" },
-        React.createElement("div", { className: "prefix" },
-            showAptitudeName ? React.createElement("div", { className: "line-prefix blank" }) : null,
-            linePrefix ? React.createElement("div", { className: "line-prefix" }, linePrefix) : null),
-        aptitudeElements));
-}
-// key is a unique identifier so React can properly update certain parts
-function generateAptitudeElement(showAptitudeName, key, shorthand, fullName, value) {
-    return (React.createElement("div", { className: "aptitude-element", key: key },
-        showAptitudeName ? React.createElement("div", { className: "aptitude-name" },
-            React.createElement("div", { className: "aptitude-shorthand" }, shorthand),
-            React.createElement("div", { className: "aptitude-fullname" }, fullName)) : null,
-        React.createElement("input", { type: "text", className: "aptitude-value", defaultValue: value })));
-}
 var aptitudeValues;
 (function (aptitudeValues) {
     aptitudeValues[aptitudeValues["cognition"] = 0] = "cognition";
@@ -231,74 +334,66 @@ var aptitudeValues;
 
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var aptitude_1 = __webpack_require__(6);
-var morph_1 = __webpack_require__(7);
+var aptitude_1 = __webpack_require__(1);
+var morph_1 = __webpack_require__(8);
+var derivedStats_1 = __webpack_require__(2);
 var Character = /** @class */ (function () {
-    function Character() {
-        this.motivation = [];
-        this.languages = [];
+    function Character(name, faction, motivation, languages, isAsync, psiLevel, morph) {
         this.egoAptitudes = [];
         this.finalAptitudes = [];
-        this.aptitudeChecks = [];
         this.reputation = [];
-        this.derivedStats = [];
         this.skills = [];
         this.gear = [];
         this.pools = [];
         this.chiSleights = [];
         this.gammaSleights = [];
-        var morphAptitudes = [];
-        for (var i = 0; i < 7; i++) {
-            morphAptitudes.push(new aptitude_1.Aptitude(aptitudeValues[i], 0));
+        this.name = name;
+        this.faction = faction;
+        this.motivation = motivation;
+        this.languages = languages;
+        this.isAsync = isAsync;
+        this.psiLevel = psiLevel;
+        if (!morph) {
+            var morphAptitudes = [];
+            for (var i = 0; i < 7; i++) {
+                morphAptitudes.push(new aptitude_1.Aptitude(aptitudeValues[i], 0));
+            }
+            this.morph = new morph_1.Morph("flat", false, "none", 20, 30, "none", "none", 0, 5000, morphAptitudes);
         }
-        this.morph = new morph_1.Morph("flat", false, "none", 20, 30, "none", "none", 0, 5000, morphAptitudes);
+        else {
+            this.morph = morph;
+        }
         for (var i = 0; i < 7; i++) {
             var tempAptitude = new aptitude_1.Aptitude(aptitudeValues[i], 15);
             this.egoAptitudes.push(tempAptitude);
         }
-        this.finalAptitudes = getFinalAptitudes(this.egoAptitudes, this.morph);
+        this.finalAptitudes = this.GetFinalAptitudes(this.egoAptitudes, this.morph);
+        this.derivedStats = new derivedStats_1.DerivedStats(this.finalAptitudes);
     }
-    Character.prototype.setDerivedStats = function () {
-        this.derivedStats[0] = (this.egoAptitudes[2].rating + this.egoAptitudes[1].rating) / 5;
-        for (var i = 0; i < this.egoAptitudes.length; i++) {
-            this.aptitudeChecks[i] = this.egoAptitudes[i].rating * 3;
+    Character.prototype.GetFinalAptitudes = function (aptitudeOne, morph) {
+        if (aptitudeOne.length == morph.aptitudes.length) {
+            var tempAptitudes = [];
+            for (var i = 0; i < aptitudeOne.length; i++) {
+                var newRating = (+aptitudeOne[i].rating + +morph.aptitudes[i].rating) > morph.aptitudeMaximum ?
+                    morph.aptitudeMaximum : +aptitudeOne[i].rating + +morph.aptitudes[i].rating;
+                tempAptitudes.push(new aptitude_1.Aptitude(aptitudeOne[i].fullName, newRating));
+            }
+            return tempAptitudes;
         }
-        this.derivedStats[1] = this.egoAptitudes[5].rating * 2;
-        this.derivedStats[2] = Math.round(this.derivedStats[1] / 5);
-        this.derivedStats[3] = this.derivedStats[1] * 2;
-        this.derivedStats[4] = this.isAsync ? (this.psiLevel * 10) + (this.chiSleights.length * 5) : 0;
+        else {
+            console.log("Warning: Aptitude arrays are not of equal size. No addition performed.");
+            return aptitudeOne;
+        }
     };
     return Character;
 }());
 exports.Character = Character;
-function getFinalAptitudes(aptitudeOne, morph) {
-    if (aptitudeOne.length == morph.aptitudes.length) {
-        var tempAptitudes = [];
-        for (var i = 0; i < aptitudeOne.length; i++) {
-            tempAptitudes.push(new aptitude_1.Aptitude(aptitudeOne[i].fullName, aptitudeOne[i].rating + morph.aptitudes[i].rating > morph.aptitudeMaximum ?
-                morph.aptitudeMaximum : aptitudeOne[i].rating + morph.aptitudes[i].rating));
-        }
-        return tempAptitudes;
-    }
-    else {
-        console.log("Warning: Aptitude arrays are not of equal size. No addition performed.");
-        return aptitudeOne;
-    }
-}
-var derivedAttributes;
-(function (derivedAttributes) {
-    derivedAttributes[derivedAttributes["Initiative"] = 0] = "Initiative";
-    derivedAttributes[derivedAttributes["Lucidity"] = 1] = "Lucidity";
-    derivedAttributes[derivedAttributes["Trauma Threshold"] = 2] = "Trauma Threshold";
-    derivedAttributes[derivedAttributes["Insanity Rating"] = 3] = "Insanity Rating";
-    derivedAttributes[derivedAttributes["Infection Rating"] = 4] = "Infection Rating";
-})(derivedAttributes || (derivedAttributes = {}));
 var aptitudeValues;
 (function (aptitudeValues) {
     aptitudeValues[aptitudeValues["cognition"] = 0] = "cognition";
@@ -312,25 +407,7 @@ var aptitudeValues;
 
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var Aptitude = /** @class */ (function () {
-    function Aptitude(name, rating) {
-        this.fullName = name;
-        this.shortHand = name.slice(0, 3);
-        this.rating = rating;
-    }
-    return Aptitude;
-}());
-exports.Aptitude = Aptitude;
-
-
-/***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

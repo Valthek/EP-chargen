@@ -29,7 +29,7 @@
             .line-prefix {
                 @include bordered-table($aptitudeValueBorder, $aptitudeValueBackground, $aptitudeValueFocus, 130px, 30px);
                 &.blank {
-                    background-color: $aptitudeValueOffset;
+                    background-color: $aptitudeBlankBoxBackground;
                 }
             }
             .aptitude-element {
@@ -42,7 +42,7 @@
             .line-prefix {
                 @include bordered-table($aptitudeValueBorder, $aptitudeValueOffsetBackground, $aptitudeValueOffsetFocus, 130px, 30px);
                 &.blank {
-                    background-color: $aptitudeValueOffset;
+                    background-color: $aptitudeBlankBoxBackground;
                 }
             }
             .aptitude-element {
