@@ -1,16 +1,10 @@
-import { Aptitude } from "./aptitude";
+import { Skill } from "./skill";
 
-export class Skill {
+export class Background {
     name: string;
-    isKnowledge:boolean;
-    linkedAptitude: Aptitude;
+    skill: Skill[] = [];
     ranks: number;
     specializations: string[] = [];
-
-    constructor()
-    {
-        
-    }
 
     public AddSpecialization(newSpecialization: string) {
         this.specializations.push(newSpecialization);

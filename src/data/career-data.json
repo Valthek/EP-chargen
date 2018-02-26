@@ -1,0 +1,27 @@
+{
+    "skill": 
+        [
+            {"name":"Athletics", "attribute": "SOM", "type": ["Active", "Physical"]},
+            {"name":"Deceive", "attribute": "SAV", "type": ["Active", "Social"]},
+            {"name":"Exotic Skill [Field]", "attribute": "—", "type": ["—"]}	,
+            {"name":"Fray", "attribute": "REF", "type": ["Active", "Combat"]},
+            {"name":"Free Fall", "attribute": "SOM", "type": ["Active", "Physical"]},
+            {"name":"Guns", "attribute": "REF", "type": ["Active", "Combat"]},
+            {"name":"Hardware: [Field]", "attribute": "COG", "type": ["Active", "Technical"]},
+            {"name":"Infiltrate", "attribute": "REF", "type": ["Active", "Physical"]}	,
+            {"name":"Infosec", "attribute": "COG", "type": ["Active", "Technical"]},
+            {"name":"Interface", "attribute": "COG", "type": ["Active", "Technical"]},
+            {"name":"Kinesics", "attribute": "SAV", "type": ["Active", "Social"]},
+            {"name":"Know: [Field]", "attribute": "COG/INT", "type": ["Know"]},
+            {"name":"Medicine: [Field]", "attribute": "COG", "type": ["Active", "Technical"]},
+            {"name":"Melee", "attribute": "SOM", "type": ["Active", "Combat"]},
+            {"name":"Perceive", "attribute": "INT", "type": ["Active", "Mental"]},
+            {"name":"Persuade", "attribute": "SAV", "type": ["Active", "Social"]},
+            {"name":"Pilot: [Field]", "attribute": "REF", "type": ["Active", "Vehicle"]},
+            {"name":"Program", "attribute": "COG", "type": ["Active", "Technical"]},
+            {"name":"Provoke", "attribute": "SAV", "type": ["Active", "Social"]},
+            {"name":"Psi", "attribute": "WIL", "type": ["Active", "Mental",	"Psi"]},
+            {"name":"Research", "attribute": "INT", "type": ["Active", "Technical"]},
+            {"name":"Survival", "attribute": "INT", "type": ["Active", "Mental"]}
+        ]
+}

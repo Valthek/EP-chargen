@@ -150,14 +150,16 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = __webpack_require__(0);
 var character_component_1 = __webpack_require__(6);
-var character_1 = __webpack_require__(7);
+var character_outline_component_1 = __webpack_require__(7);
+var _01_background_component_1 = __webpack_require__(8);
+var _02_career_component_1 = __webpack_require__(10);
+var character_1 = __webpack_require__(12);
 var derivedStats_1 = __webpack_require__(2);
-// 'HelloProps' describes the shape of props.
-// State is never set so we use the '{}' type.
 var Generator = /** @class */ (function (_super) {
     __extends(Generator, _super);
     function Generator(props) {
         var _this = _super.call(this, props) || this;
+        _this.creationStep = [React.createElement(_01_background_component_1.default, null), React.createElement(_02_career_component_1.default, null)];
         _this.state = {
             character: new character_1.Character("", "", "", "", false, 0),
             step: 0
@@ -169,8 +171,15 @@ var Generator = /** @class */ (function (_super) {
         var _this = this;
         return (React.createElement("div", { className: "generator" },
             React.createElement(character_component_1.default, { character: this.state.character, handleCharacterChange: this.handleCharacterChange }),
-            this.state.step > 0 ? React.createElement("button", { id: "previous-step", onClick: function (e) { return _this.changeStep(e, -1); } }, "Step back citizen ") : null,
-            this.state.step < 14 ? React.createElement("button", { id: "next-step", onClick: function (e) { return _this.changeStep(e, 1); } }, "Move along citizen") : null));
+            React.createElement(character_outline_component_1.default, { character: this.state.character, selectBackground: this.handleBackgroundChange, selectFaction: this.handleFactionChange }),
+            this.creationStep[this.state.step],
+            this.state.step > 0
+                ? React.createElement("a", { href: "#", id: "previous-step", onClick: function (e) { return _this.changeStep(e, -1); } }, "Previous Step")
+                : React.createElement("a", { href: "#", id: "previous-step" }, "Previous Step"),
+            creationState[this.state.step],
+            this.state.step < 13
+                ? React.createElement("a", { href: "#", id: "next-step", onClick: function (e) { return _this.changeStep(e, 1); } }, "Move along citizen")
+                : React.createElement("a", { href: "#", id: "next-step" }, "Next Step")));
     };
     Generator.prototype.changeStep = function (event, change) {
         var tempStep = this.state.step + change;
@@ -226,7 +235,9 @@ var Generator = /** @class */ (function (_super) {
         tempChar.derivedStats = new derivedStats_1.DerivedStats(tempChar.finalAptitudes);
         this.setState({ character: tempChar });
     };
-    Generator.prototype.handleAttributeChange = function (event, index, attribute) {
+    Generator.prototype.handleBackgroundChange = function (event) {
+    };
+    Generator.prototype.handleFactionChange = function (event) {
     };
     return Generator;
 }(React.Component));
@@ -271,31 +282,30 @@ var React = __webpack_require__(0);
 var CharacterComponent = /** @class */ (function (_super) {
     __extends(CharacterComponent, _super);
     function CharacterComponent(props) {
-        return _super.call(this, props) || this;
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            showCharacterSheet: false
+        };
+        return _this;
     }
     CharacterComponent.prototype.render = function () {
         var _this = this;
         return (React.createElement("div", { className: "character" },
-            React.createElement("div", { className: "character-basics" },
-                React.createElement("div", { className: "basics-element" },
-                    React.createElement("div", { className: "basics-key" }, "Character"),
-                    React.createElement("div", null,
-                        "Hello ",
-                        this.props.character.name),
-                    React.createElement("input", { type: "text", className: "basics-value", value: this.props.character.name, onChange: function (e) { return _this.props.handleCharacterChange(e, "name"); } })),
-                React.createElement("div", { className: "basics-element" },
-                    React.createElement("div", { className: "basics-key" }, "Faction"),
-                    React.createElement("input", { type: "text", className: "basics-value", value: this.props.character.faction, onChange: function (e) { return _this.props.handleCharacterChange(e, "faction"); } })),
-                React.createElement("div", { className: "basics-element" },
-                    React.createElement("div", { className: "basics-key" }, "Motivations"),
-                    React.createElement("input", { type: "text", className: "basics-value", value: this.props.character.motivation, onChange: function (e) { return _this.props.handleCharacterChange(e, "motivation"); } })),
-                React.createElement("div", { className: "basics-element" },
-                    React.createElement("div", { className: "basics-key" }, "Languages"),
-                    React.createElement("input", { type: "text", className: "basics-value", value: this.props.character.languages, onChange: function (e) { return _this.props.handleCharacterChange(e, "languages"); } }))),
-            React.createElement("div", { className: "aptitude-block" },
-                this.generateAptitudeLine(true, this.props.character.egoAptitudes, "Ego", "egoAptitudes"),
-                this.generateAptitudeLine(false, this.props.character.morph.aptitudes, "Morph", "morph", "aptitudes"),
-                this.generateAptitudeLine(false, this.props.character.finalAptitudes, "Final", "finalAptitudes"))));
+            React.createElement("a", { href: "#", className: "toggle-sheet", onClick: function (e) { return _this.toggleCharacterSheet(e); } }, this.state.showCharacterSheet ? 'hide sheet' : 'show sheet'),
+            this.state.showCharacterSheet ?
+                React.createElement("div", { className: "character-sheet" },
+                    React.createElement("div", { className: "character-basics" },
+                        React.createElement("div", { className: "basics-element" },
+                            React.createElement("div", { className: "basics-key" }, "Name:"),
+                            React.createElement("div", { className: "basics-value" }, this.props.character.name)),
+                        React.createElement("div", { className: "basics-element" },
+                            React.createElement("div", { className: "basics-key" }, "Motivations: "),
+                            React.createElement("div", { className: "basics-value" }, this.props.character.motivation))),
+                    React.createElement("div", { className: "aptitude-block" },
+                        this.generateAptitudeLine(true, this.props.character.egoAptitudes, "Ego", "egoAptitudes"),
+                        this.generateAptitudeLine(false, this.props.character.morph.aptitudes, "Morph", "morph", "aptitudes"),
+                        this.generateAptitudeLine(false, this.props.character.finalAptitudes, "Final", "finalAptitudes")))
+                : null));
     };
     ;
     CharacterComponent.prototype.generateAptitudeLine = function (showAptitudeName, aptitudes, linePrefix, characterAttribute, characterObjectAttribute) {
@@ -311,12 +321,14 @@ var CharacterComponent = /** @class */ (function (_super) {
     };
     // key is a unique identifier so React can properly update certain parts
     CharacterComponent.prototype.generateAptitudeElement = function (showAptitudeName, key, fullName, value, characterAttribute, characterObjectAttribute) {
-        var _this = this;
         return (React.createElement("div", { className: "aptitude-element", key: key },
             showAptitudeName ? React.createElement("div", { className: "aptitude-name" },
                 React.createElement("div", { className: "aptitude-shorthand" }, fullName.slice(0, 3)),
                 React.createElement("div", { className: "aptitude-fullname" }, fullName)) : null,
-            React.createElement("input", { type: "text", className: "aptitude-value", value: value, onChange: function (e) { return _this.props.handleCharacterChange(e, characterAttribute, key, "rating"); } })));
+            React.createElement("div", { className: "aptitude-value" }, value)));
+    };
+    CharacterComponent.prototype.toggleCharacterSheet = function (event) {
+        this.setState({ showCharacterSheet: !this.state.showCharacterSheet });
     };
     return CharacterComponent;
 }(React.Component));
@@ -339,12 +351,139 @@ var aptitudeValues;
 
 "use strict";
 
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = __webpack_require__(0);
+var CharacterOutlineComponent = /** @class */ (function (_super) {
+    __extends(CharacterOutlineComponent, _super);
+    function CharacterOutlineComponent(props) {
+        return _super.call(this, props) || this;
+    }
+    CharacterOutlineComponent.prototype.render = function () {
+        var _this = this;
+        return (React.createElement("div", { className: "creation-step" },
+            React.createElement("div", { className: "creation-element" },
+                React.createElement("div", { className: "creation-key" }, "Character Name:"),
+                React.createElement("input", { type: "text", className: "creation-value", value: this.props.character.name, onChange: function (e) { return _this.props.handleCharacterChange(e, "name"); } })),
+            React.createElement("div", { className: "creation-element" },
+                React.createElement("div", { className: "creation-key" }, "Character Concept:"),
+                React.createElement("input", { type: "text", className: "creation-value", value: this.props.character.name, onChange: function (e) { return _this.props.handleCharacterChange(e, "name"); } })),
+            React.createElement("div", { className: "creation-element" },
+                React.createElement("div", { className: "creation-key" }, "Character Background:"),
+                React.createElement("input", { type: "text", className: "creation-value", value: this.props.character.name, onChange: function (e) { return _this.props.handleCharacterChange(e, "name"); } })),
+            React.createElement("div", { className: "creation-element" },
+                React.createElement("div", { className: "creation-key" }, "Character Background:"),
+                React.createElement("input", { type: "text", className: "creation-value", value: this.props.character.name, onChange: function (e) { return _this.props.handleCharacterChange(e, "name"); } })),
+            "2. Choose Background (p.\u00A0131) 3. Choose Faction (p.\u00A0132)"));
+    };
+    return CharacterOutlineComponent;
+}(React.Component));
+exports.default = CharacterOutlineComponent;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+/// <reference path="../../../typings.d.ts" />
+var React = __webpack_require__(0);
+var data = __webpack_require__(9);
+var BackgroundComponent = /** @class */ (function (_super) {
+    __extends(BackgroundComponent, _super);
+    function BackgroundComponent(props) {
+        return _super.call(this, props) || this;
+    }
+    BackgroundComponent.prototype.render = function () {
+        var word = data.name;
+        console.log(word);
+        return React.createElement("div", null, " \"Hello\" ");
+    };
+    return BackgroundComponent;
+}(React.Component));
+exports.default = BackgroundComponent;
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = {"name":"testing"}
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+/// <reference path="../../../typings.d.ts" />
+var React = __webpack_require__(0);
+var data = __webpack_require__(11);
+var CareerComponent = /** @class */ (function (_super) {
+    __extends(CareerComponent, _super);
+    function CareerComponent(props) {
+        return _super.call(this, props) || this;
+    }
+    CareerComponent.prototype.render = function () {
+        var word = data.name;
+        console.log(word);
+        return React.createElement("div", null, " \"Career!\" ");
+    };
+    return CareerComponent;
+}(React.Component));
+exports.default = CareerComponent;
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = {"skill":[{"name":"Athletics","attribute":"SOM","type":["Active","Physical"]},{"name":"Deceive","attribute":"SAV","type":["Active","Social"]},{"name":"Exotic Skill [Field]","attribute":"—","type":["—"]},{"name":"Fray","attribute":"REF","type":["Active","Combat"]},{"name":"Free Fall","attribute":"SOM","type":["Active","Physical"]},{"name":"Guns","attribute":"REF","type":["Active","Combat"]},{"name":"Hardware: [Field]","attribute":"COG","type":["Active","Technical"]},{"name":"Infiltrate","attribute":"REF","type":["Active","Physical"]},{"name":"Infosec","attribute":"COG","type":["Active","Technical"]},{"name":"Interface","attribute":"COG","type":["Active","Technical"]},{"name":"Kinesics","attribute":"SAV","type":["Active","Social"]},{"name":"Know: [Field]","attribute":"COG/INT","type":["Know"]},{"name":"Medicine: [Field]","attribute":"COG","type":["Active","Technical"]},{"name":"Melee","attribute":"SOM","type":["Active","Combat"]},{"name":"Perceive","attribute":"INT","type":["Active","Mental"]},{"name":"Persuade","attribute":"SAV","type":["Active","Social"]},{"name":"Pilot: [Field]","attribute":"REF","type":["Active","Vehicle"]},{"name":"Program","attribute":"COG","type":["Active","Technical"]},{"name":"Provoke","attribute":"SAV","type":["Active","Social"]},{"name":"Psi","attribute":"WIL","type":["Active","Mental","Psi"]},{"name":"Research","attribute":"INT","type":["Active","Technical"]},{"name":"Survival","attribute":"INT","type":["Active","Mental"]}]}
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 Object.defineProperty(exports, "__esModule", { value: true });
 var aptitude_1 = __webpack_require__(1);
-var morph_1 = __webpack_require__(8);
+var morph_1 = __webpack_require__(13);
 var derivedStats_1 = __webpack_require__(2);
 var Character = /** @class */ (function () {
-    function Character(name, faction, motivation, languages, isAsync, psiLevel, morph) {
+    function Character(name, concept, motivation, languages, isAsync, psiLevel, morph) {
         this.egoAptitudes = [];
         this.finalAptitudes = [];
         this.reputation = [];
@@ -354,7 +493,7 @@ var Character = /** @class */ (function () {
         this.chiSleights = [];
         this.gammaSleights = [];
         this.name = name;
-        this.faction = faction;
+        this.concept = concept;
         this.motivation = motivation;
         this.languages = languages;
         this.isAsync = isAsync;
@@ -391,6 +530,12 @@ var Character = /** @class */ (function () {
             return aptitudeOne;
         }
     };
+    Character.prototype.SetBackground = function (background) {
+        this.background = background;
+    };
+    Character.prototype.SetFaction = function (faction) {
+        this.faction = faction;
+    };
     return Character;
 }());
 exports.Character = Character;
@@ -407,7 +552,7 @@ var aptitudeValues;
 
 
 /***/ }),
-/* 8 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

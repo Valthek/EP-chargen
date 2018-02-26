@@ -1,11 +1,12 @@
 import * as React from "react";
 
 import CharacterComponent from "./character-component";
+import CharacterOutlineComponent from "./character-outline-component";
+import BackgroundComponent from "./creation-steps/01-background-component";
+import CareerComponent from "./creation-steps/02-career-component";
 import { Character } from "../models/character";
-import {DerivedStats} from "../models/derivedStats";
+import { DerivedStats } from "../models/derivedStats";
 
-// 'HelloProps' describes the shape of props.
-// State is never set so we use the '{}' type.
 export default class Generator extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
@@ -13,9 +14,10 @@ export default class Generator extends React.Component<any, any> {
             character: new Character("", "", "", "", false, 0),
             step: 0
         }
-
         this.handleCharacterChange = this.handleCharacterChange.bind(this);
     }
+    creationStep: JSX.Element[] = [<BackgroundComponent />, <CareerComponent />]
+
     render() {
         return (
             <div className="generator">
@@ -23,14 +25,19 @@ export default class Generator extends React.Component<any, any> {
                     character={this.state.character}
                     handleCharacterChange={this.handleCharacterChange}
                 />
-                {this.state.step > 0 ? <button
-                    id="previous-step"
-                    onClick={e => this.changeStep(e, -1)}>
-                    Step back citizen </button> : null}
-                {this.state.step < 14 ? <button
-                    id="next-step"
-                    onClick={e => this.changeStep(e, 1)}>
-                    Move along citizen</button> : null}
+                <CharacterOutlineComponent
+                    character={this.state.character}
+                    selectBackground={this.handleBackgroundChange}
+                    selectFaction={this.handleFactionChange}
+                />
+                {this.creationStep[this.state.step]}
+                {this.state.step > 0
+                    ? <a href="#" id="previous-step" onClick={e => this.changeStep(e, -1)}>Previous Step</a>
+                    : <a href="#" id="previous-step">Previous Step</a>}
+                {creationState[this.state.step]}
+                {this.state.step < 13
+                    ? <a href="#" id="next-step" onClick={e => this.changeStep(e, 1)}>Move along citizen</a>
+                    : <a href="#" id="next-step">Next Step</a>}
             </div>
         )
     }
@@ -40,6 +47,7 @@ export default class Generator extends React.Component<any, any> {
         this.setState({ step: tempStep });
     }
 
+    // This is how you overload methods in TS: multiple methods with compatible signatures to the implementation method down below
     handleCharacterChange(event: any, attribute: string): void
     handleCharacterChange(event: any, attribute: string, index: number): void
     handleCharacterChange(event: any, attribute: string, index: number, objectAttribute: string): void
@@ -66,16 +74,14 @@ export default class Generator extends React.Component<any, any> {
                 temp = characterAttribute.constructor.name;
                 switch (temp) {
                     case "Aptitude":
-                            characterAttribute = characterAttribute[objectAttribute];
-                            temp = characterAttribute.constructor.name;
-                            if (temp.constructor.name == "number")
-                            {
-                                tempChar[attribute][index][objectAttribute] = +event.target.value;
-                            }
-                            else
-                            {
-                                tempChar[attribute][index][objectAttribute] = event.target.value;
-                            }
+                        characterAttribute = characterAttribute[objectAttribute];
+                        temp = characterAttribute.constructor.name;
+                        if (temp.constructor.name == "number") {
+                            tempChar[attribute][index][objectAttribute] = +event.target.value;
+                        }
+                        else {
+                            tempChar[attribute][index][objectAttribute] = event.target.value;
+                        }
                         break;
                     case "Sleight":
                         // not implemented
@@ -98,24 +104,28 @@ export default class Generator extends React.Component<any, any> {
         this.setState({ character: tempChar })
     }
 
-    public handleAttributeChange(event: any, index: number, attribute: string): void {
+    public handleBackgroundChange(event: any): void {
+
+    }
+
+    public handleFactionChange(event: any): void {
 
     }
 }
 
 enum creationState {
-    Background,
-    Career,
-    Interest,
-    Faction,
+    'Background',
+    'Career',
+    'Interest',
+    'Faction',
     'Aptitude Template',
-    Skills,
-    Languages,
-    Flex,
-    Reputation,
-    Customisation,
+    'Skills',
+    'Languages',
+    'Flex',
+    'Reputation',
+    'Customisation',
     'Derived Stats',
     'Starting Morph and Gear',
-    Motivation,
-    Review
+    'Motivation',
+    'Review'
 }

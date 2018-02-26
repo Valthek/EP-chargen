@@ -6,6 +6,8 @@ import { DerivedStats } from "./derivedStats";
 
 export class Character {
     public name: string;
+    public concept:string;
+    public background: string;
     public faction: string;
     public morph: Morph;
     public motivation: string;
@@ -22,9 +24,9 @@ export class Character {
     public chiSleights: Sleight[] = [];
     public gammaSleights: Sleight[] = [];
 
-    constructor(name: string, faction: string, motivation: string, languages: string, isAsync: boolean, psiLevel: number, morph?: Morph) {
+    constructor(name: string, concept:string, motivation: string, languages: string, isAsync: boolean, psiLevel: number, morph?: Morph) {
         this.name = name;
-        this.faction = faction;
+        this.concept = concept;
         this.motivation = motivation;
         this.languages = languages;
         this.isAsync = isAsync;
@@ -59,6 +61,14 @@ export class Character {
             console.log("Warning: Aptitude arrays are not of equal size. No addition performed.");
             return aptitudeOne;
         }
+    }
+
+    public SetBackground(background:string){
+        this.background = background;
+    }
+
+    public SetFaction(faction:string){
+        this.faction = faction;
     }
 }
 

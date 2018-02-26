@@ -6,48 +6,39 @@ import { Aptitude } from "../models/aptitude";
 export default class CharacterComponent extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
+        this.state = {
+            showCharacterSheet: false
+        }
     }
 
     render() {
         return (
             <div className="character">
-                <div className="character-basics">
-                    <div className="basics-element">
-                        <div className="basics-key">Character</div>
-                        <div>Hello {this.props.character.name}</div>
-                        <input type="text" className="basics-value"
-                            value={this.props.character.name}
-                            onChange={e => this.props.handleCharacterChange(e, "name")}></input>
+                <a href="#" className="toggle-sheet" onClick={e => this.toggleCharacterSheet(e)}>{this.state.showCharacterSheet ? 'hide sheet' : 'show sheet'}</a>
+                {this.state.showCharacterSheet ?
+                    <div className="character-sheet">
+                        <div className="character-basics">
+                            <div className="basics-element">
+                                <div className="basics-key">Name:</div>
+                                <div className="basics-value">{this.props.character.name}</div>
+                            </div>
+                            <div className="basics-element">
+                                <div className="basics-key">Motivations: </div>
+                                <div className="basics-value">{this.props.character.motivation}</div>
+                            </div>
+                        </div>
+                        <div className="aptitude-block">
+                            {this.generateAptitudeLine(true, this.props.character.egoAptitudes, "Ego", "egoAptitudes")}
+                            {this.generateAptitudeLine(false, this.props.character.morph.aptitudes, "Morph", "morph", "aptitudes")}
+                            {this.generateAptitudeLine(false, this.props.character.finalAptitudes, "Final", "finalAptitudes")}
+                        </div>
                     </div>
-                    <div className="basics-element">
-                        <div className="basics-key">Faction</div>
-                        <input type="text" className="basics-value"
-                            value={this.props.character.faction}
-                            onChange={e => this.props.handleCharacterChange(e, "faction")}></input>
-                    </div>
-                    <div className="basics-element">
-                        <div className="basics-key">Motivations</div>
-                        <input type="text" className="basics-value"
-                            value={this.props.character.motivation}
-                            onChange={e => this.props.handleCharacterChange(e, "motivation")}></input>
-                    </div>
-                    <div className="basics-element">
-                        <div className="basics-key">Languages</div>
-                        <input type="text" className="basics-value"
-                            value={this.props.character.languages}
-                            onChange={e => this.props.handleCharacterChange(e, "languages")}></input>
-                    </div>
-                </div>
-                <div className="aptitude-block">
-                    {this.generateAptitudeLine(true, this.props.character.egoAptitudes, "Ego", "egoAptitudes")}
-                    {this.generateAptitudeLine(false, this.props.character.morph.aptitudes, "Morph", "morph", "aptitudes")}
-                    {this.generateAptitudeLine(false, this.props.character.finalAptitudes, "Final", "finalAptitudes")}
-                </div>
+                    : null}
             </div>
         )
     };
 
-    generateAptitudeLine(showAptitudeName: boolean, aptitudes: Aptitude[], linePrefix: string, characterAttribute:string, characterObjectAttribute?:string) {
+    generateAptitudeLine(showAptitudeName: boolean, aptitudes: Aptitude[], linePrefix: string, characterAttribute: string, characterObjectAttribute?: string) {
         const aptitudeElements = aptitudes.map((number, index) =>
             this.generateAptitudeElement(showAptitudeName, index, aptitudeValues[index], aptitudes[index].rating.toString(), characterAttribute, characterObjectAttribute)
         )
@@ -63,17 +54,21 @@ export default class CharacterComponent extends React.Component<any, any> {
     }
 
     // key is a unique identifier so React can properly update certain parts
-    generateAptitudeElement(showAptitudeName: boolean, key: number, fullName: string, value: string, characterAttribute:string, characterObjectAttribute?:string) {
+    generateAptitudeElement(showAptitudeName: boolean, key: number, fullName: string, value: string, characterAttribute: string, characterObjectAttribute?: string) {
         return (
             <div className="aptitude-element" key={key}>
                 {showAptitudeName ? <div className="aptitude-name">
                     <div className="aptitude-shorthand">{fullName.slice(0, 3)}</div>
                     <div className="aptitude-fullname">{fullName}</div>
                 </div> : null}
-                <input type="text" className="aptitude-value"
-                    value={value}
-                    onChange={e => this.props.handleCharacterChange(e, characterAttribute, key, "rating")}></input>
+                <div className="aptitude-value">
+                    {value}
+                </div>
             </div>)
+    }
+
+    toggleCharacterSheet(event: any) {
+        this.setState({ showCharacterSheet: !this.state.showCharacterSheet });
     }
 }
 
