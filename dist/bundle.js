@@ -159,7 +159,10 @@ var Generator = /** @class */ (function (_super) {
     __extends(Generator, _super);
     function Generator(props) {
         var _this = _super.call(this, props) || this;
-        _this.creationStep = [React.createElement(_01_background_component_1.default, null), React.createElement(_02_career_component_1.default, null)];
+        _this.creationStep = [
+            React.createElement(_01_background_component_1.default, { handleBackgroundChange: _this.handleBackgroundChange }),
+            React.createElement(_02_career_component_1.default, null)
+        ];
         _this.state = {
             character: new character_1.Character("", "", "", "", false, 0),
             step: 0
@@ -236,6 +239,7 @@ var Generator = /** @class */ (function (_super) {
         this.setState({ character: tempChar });
     };
     Generator.prototype.handleBackgroundChange = function (event) {
+        console.log(event);
     };
     Generator.prototype.handleFactionChange = function (event) {
     };
@@ -413,12 +417,28 @@ var data = __webpack_require__(9);
 var BackgroundComponent = /** @class */ (function (_super) {
     __extends(BackgroundComponent, _super);
     function BackgroundComponent(props) {
-        return _super.call(this, props) || this;
+        var _this = _super.call(this, props) || this;
+        _this.backgroundData = data.background;
+        return _this;
     }
     BackgroundComponent.prototype.render = function () {
-        var word = data.name;
+        var _this = this;
+        var word = data.background;
         console.log(word);
-        return React.createElement("div", null, " \"Hello\" ");
+        return React.createElement("div", { className: "background-selection" },
+            React.createElement("select", { onChange: function (e) { return _this.props.handleBackgroundChange(_this.getBackgroundData(e.target.value)); } }, this.getBackgroundList()));
+    };
+    BackgroundComponent.prototype.getBackgroundList = function () {
+        var backgroundOptions = [];
+        for (var i = 0; i < this.backgroundData.length; i++) {
+            backgroundOptions.push(React.createElement("option", { key: this.backgroundData[i].name, value: this.backgroundData[i].name }, this.backgroundData[i].name));
+        }
+        return backgroundOptions;
+    };
+    BackgroundComponent.prototype.getBackgroundData = function (backgroundName) {
+        return this.backgroundData.filter(function (object) {
+            return object["name"] === backgroundName;
+        });
     };
     return BackgroundComponent;
 }(React.Component));
@@ -429,7 +449,7 @@ exports.default = BackgroundComponent;
 /* 9 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"testing"}
+module.exports = {"background":[{"name":"Colonist","description":"You were an original settler of Earth orbit, Luna, Mars, or a smaller outpost elsewhere, before the Fall.","skill":[{"name":"Free Fall","attribute":"SOM","rating":40,"type":["Active","Physical"]},{"name":"Hardware","field":["Aerospace","Electronics","Industrial"],"attribute":"COG","rating":40,"type":["Active","Technical"]},{"name":"Interface","attribute":"COG","rating":30,"type":["Active","Technical"]},{"name":"Pilot","field":["Air","Ground","Nautical","Space"],"attribute":"REF","rating":30,"type":["Active","Vehicle"]},{"name":"Survival","attribute":"INT","rating":30,"type":["Active","Mental"]},{"name":"Know","field":["Administration","Flight Crew Ops","Hab Ops"],"attribute":"INT","rating":60,"type":["Know"]},{"name":"Know","field":["Botany","Chemistry","Engineering","Physics"],"attribute":"COG","rating":30,"type":["Know"]}]},{"name":"Enclaver","description":"On Earth, you lived a life of precarious but protected stability in a defended enclave.","skill":[{"name":"Athletics","attribute":"SOM","rating":40,"type":["Active","Physical"]},{"name":"Interface","attribute":"COG","rating":40,"type":["Active","Technical"]},{"name":"Kinesics","attribute":"SAV","rating":30,"type":["Active","Social"]},{"name":"Persuade","attribute":"SAV","rating":20,"type":["Active","Social"]},{"name":"Pilot:","field":["Ground"],"attribute":"REF","rating":20,"type":["Active","Vehicle"]},{"name":"Program","attribute":"COG","rating":20,"type":["Active","Technical"]},{"name":"Know:","field":["Celebrity Gossip","Pop Culture","Sports"],"attribute":"INT","rating":60,"type":["Know"]},{"name":"Know:","field":["Economics","Education","Psychology"],"attribute":"COG","rating":30,"type":["Know"]}]},{"name":"Freelancer","description":"You were a cog in the wheels of hypercapitalism, taking whatever gigs came your way.","skill":[{"name":"Interface","attribute":"COG","rating":40,"type":["Active","Technical"]},{"name":"Kinesics","attribute":"SAV","rating":20,"type":["Active","Social"]},{"name":"Persuade","attribute":"SAV","rating":40,"type":["Active","Social"]},{"name":"Program","attribute":"COG","rating":30,"type":["Active","Technical"]},{"name":"Research","attribute":"INT","rating":40,"type":["Active","Technical"]},{"name":"Know:","field":["Accounting","Data Processing","Freelancing"],"attribute":"COG","rating":60,"type":["Know"]},{"name":"Know:","field":["Craft Beers","Music (choose a genre)","Sports"],"attribute":"INT","rating":30,"type":["Know"]}]},{"name":"Hyperelite","description":"You lived in the top percent, with abundant wealth and resources.","skill":[{"name":"Athletics","attribute":"SOM","rating":30,"type":["Active","Physical"]},{"name":"Deceive","attribute":"SAV","rating":30,"type":["Active","Social"]},{"name":"Kinesics","attribute":"SAV","rating":50,"type":["Active","Social"]},{"name":"Persuade","attribute":"SAV","rating":30,"type":["Active","Social"]},{"name":"Provoke","attribute":"SAV","rating":30,"type":["Active","Social"]},{"name":"Know:","field":["Economics","Law","Political Science"],"attribute":"COG","rating":60,"type":["Know"]},{"name":"Know:","field":["Fine Art","Hypercorp Politics","Stock Market"],"attribute":"INT","rating":30,"type":["Know"]}]}]}
 
 /***/ }),
 /* 10 */
@@ -470,7 +490,7 @@ exports.default = CareerComponent;
 /* 11 */
 /***/ (function(module, exports) {
 
-module.exports = {"skill":[{"name":"Athletics","attribute":"SOM","type":["Active","Physical"]},{"name":"Deceive","attribute":"SAV","type":["Active","Social"]},{"name":"Exotic Skill [Field]","attribute":"—","type":["—"]},{"name":"Fray","attribute":"REF","type":["Active","Combat"]},{"name":"Free Fall","attribute":"SOM","type":["Active","Physical"]},{"name":"Guns","attribute":"REF","type":["Active","Combat"]},{"name":"Hardware: [Field]","attribute":"COG","type":["Active","Technical"]},{"name":"Infiltrate","attribute":"REF","type":["Active","Physical"]},{"name":"Infosec","attribute":"COG","type":["Active","Technical"]},{"name":"Interface","attribute":"COG","type":["Active","Technical"]},{"name":"Kinesics","attribute":"SAV","type":["Active","Social"]},{"name":"Know: [Field]","attribute":"COG/INT","type":["Know"]},{"name":"Medicine: [Field]","attribute":"COG","type":["Active","Technical"]},{"name":"Melee","attribute":"SOM","type":["Active","Combat"]},{"name":"Perceive","attribute":"INT","type":["Active","Mental"]},{"name":"Persuade","attribute":"SAV","type":["Active","Social"]},{"name":"Pilot: [Field]","attribute":"REF","type":["Active","Vehicle"]},{"name":"Program","attribute":"COG","type":["Active","Technical"]},{"name":"Provoke","attribute":"SAV","type":["Active","Social"]},{"name":"Psi","attribute":"WIL","type":["Active","Mental","Psi"]},{"name":"Research","attribute":"INT","type":["Active","Technical"]},{"name":"Survival","attribute":"INT","type":["Active","Mental"]}]}
+module.exports = {"background":[{"name":"Colonist","description":"You were an original settler of Earth orbit, Luna, Mars, or a smaller outpost elsewhere, before the Fall.","skill":[{"name":"Free Fall","attribute":"SOM","rating":40,"type":["Active","Physical"]},{"name":"Hardware","field":["Aerospace","Electronics","Industrial"],"attribute":"COG","rating":40,"type":["Active","Technical"]},{"name":"Interface","attribute":"COG","rating":30,"type":["Active","Technical"]},{"name":"Pilot","field":["Air","Ground","Nautical","Space"],"attribute":"REF","rating":30,"type":["Active","Vehicle"]},{"name":"Survival","attribute":"INT","rating":30,"type":["Active","Mental"]},{"name":"Know","field":["Administration","Flight Crew Ops","Hab Ops"],"attribute":"INT","rating":60,"type":["Know"]},{"name":"Know","field":["Botany","Chemistry","Engineering","Physics"],"attribute":"COG","rating":30,"type":["Know"]}]},{"name":"Enclaver ","description":"On Earth, you lived a life of precarious but protected stability in a defended enclave. ","skill":[{"name":"Free Fall","attribute":"SOM","rating":40,"type":["Active","Physical"]},{"name":"Hardware","field":["Aerospace","Electronics","Industrial"],"attribute":"COG","rating":40,"type":["Active","Technical"]},{"name":"Interface","attribute":"COG","rating":30,"type":["Active","Technical"]},{"name":"Pilot","field":["Air","Ground","Nautical","Space"],"attribute":"REF","rating":30,"type":["Active","Vehicle"]},{"name":"Survival","attribute":"INT","rating":30,"type":["Active","Mental"]},{"name":"Know","field":["Administration","Flight Crew Ops","Hab Ops"],"attribute":"INT","rating":60,"type":["Know"]},{"name":"Know","field":["Botany","Chemistry","Engineering","Physics"],"attribute":"COG","rating":30,"type":["Know"]}]}]}
 
 /***/ }),
 /* 12 */

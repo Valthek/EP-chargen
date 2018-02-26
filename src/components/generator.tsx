@@ -16,7 +16,9 @@ export default class Generator extends React.Component<any, any> {
         }
         this.handleCharacterChange = this.handleCharacterChange.bind(this);
     }
-    creationStep: JSX.Element[] = [<BackgroundComponent />, <CareerComponent />]
+    creationStep: JSX.Element[] = [
+    <BackgroundComponent handleBackgroundChange={this.handleBackgroundChange}/>, 
+    <CareerComponent />]
 
     render() {
         return (
@@ -105,7 +107,7 @@ export default class Generator extends React.Component<any, any> {
     }
 
     public handleBackgroundChange(event: any): void {
-
+        console.log(event);
     }
 
     public handleFactionChange(event: any): void {
