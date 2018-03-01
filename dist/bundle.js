@@ -76,14 +76,13 @@ module.exports = React;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Aptitude = /** @class */ (function () {
-    function Aptitude(name, rating) {
+class Aptitude {
+    constructor(name, rating) {
         this.fullName = name;
         this.shortHand = name.slice(0, 3);
         this.rating = rating;
     }
-    return Aptitude;
-}());
+}
 exports.Aptitude = Aptitude;
 
 
@@ -94,12 +93,12 @@ exports.Aptitude = Aptitude;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var aptitude_1 = __webpack_require__(1);
-var DerivedStats = /** @class */ (function () {
-    function DerivedStats(finalAptitudes, isAsync, psiLevel, chiSleights) {
+const aptitude_1 = __webpack_require__(1);
+class DerivedStats {
+    constructor(finalAptitudes, isAsync, psiLevel, chiSleights) {
         this.aptitudeChecks = [];
         this.initiative = (finalAptitudes[2].rating + finalAptitudes[1].rating) / 5;
-        for (var i = 0; i < finalAptitudes.length; i++) {
+        for (let i = 0; i < finalAptitudes.length; i++) {
             this.aptitudeChecks[i] = new aptitude_1.Aptitude(finalAptitudes[i].fullName, finalAptitudes[i].rating * 3);
         }
         this.lucidity = finalAptitudes[5].rating * 2;
@@ -107,8 +106,7 @@ var DerivedStats = /** @class */ (function () {
         this.insanityRating = this.lucidity * 2;
         this.infectionRating = isAsync ? (psiLevel * 10) + (chiSleights * 5) : 0;
     }
-    return DerivedStats;
-}());
+}
 exports.DerivedStats = DerivedStats;
 
 
@@ -119,9 +117,9 @@ exports.DerivedStats = DerivedStats;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var ReactDOM = __webpack_require__(4);
-var generator_1 = __webpack_require__(5);
+const React = __webpack_require__(0);
+const ReactDOM = __webpack_require__(4);
+const generator_1 = __webpack_require__(5);
 ReactDOM.render(React.createElement(generator_1.default, { compiler: "TypeScript", framework: "React" }), document.getElementById("container"));
 
 
@@ -137,63 +135,47 @@ module.exports = ReactDOM;
 
 "use strict";
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var character_component_1 = __webpack_require__(6);
-var character_outline_component_1 = __webpack_require__(7);
-var _01_background_component_1 = __webpack_require__(8);
-var _02_career_component_1 = __webpack_require__(10);
-var character_1 = __webpack_require__(12);
-var derivedStats_1 = __webpack_require__(2);
-var Generator = /** @class */ (function (_super) {
-    __extends(Generator, _super);
-    function Generator(props) {
-        var _this = _super.call(this, props) || this;
-        _this.creationStep = [
-            React.createElement(_01_background_component_1.default, { handleBackgroundChange: _this.handleBackgroundChange }),
-            React.createElement(_02_career_component_1.default, null)
-        ];
-        _this.state = {
+const React = __webpack_require__(0);
+const character_component_1 = __webpack_require__(6);
+const character_outline_component_1 = __webpack_require__(7);
+const _01_background_component_1 = __webpack_require__(8);
+const _02_career_component_1 = __webpack_require__(10);
+const character_1 = __webpack_require__(12);
+const derivedStats_1 = __webpack_require__(2);
+class Generator extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             character: new character_1.Character("", "", "", "", false, 0),
             step: 0
         };
-        _this.handleCharacterChange = _this.handleCharacterChange.bind(_this);
-        return _this;
+        this.handleCharacterChange = this.handleCharacterChange.bind(this);
+        this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     }
-    Generator.prototype.render = function () {
-        var _this = this;
+    render() {
         return (React.createElement("div", { className: "generator" },
             React.createElement(character_component_1.default, { character: this.state.character, handleCharacterChange: this.handleCharacterChange }),
-            React.createElement(character_outline_component_1.default, { character: this.state.character, selectBackground: this.handleBackgroundChange, selectFaction: this.handleFactionChange }),
-            this.creationStep[this.state.step],
+            React.createElement(character_outline_component_1.default, { character: this.state.character, selectBackground: this.handleBackgroundChange }),
+            this.renderCreationStep(this.state.step),
             this.state.step > 0
-                ? React.createElement("a", { href: "#", id: "previous-step", onClick: function (e) { return _this.changeStep(e, -1); } }, "Previous Step")
+                ? React.createElement("a", { href: "#", id: "previous-step", onClick: e => this.changeStep(e, -1) }, "Previous Step")
                 : React.createElement("a", { href: "#", id: "previous-step" }, "Previous Step"),
             creationState[this.state.step],
             this.state.step < 13
-                ? React.createElement("a", { href: "#", id: "next-step", onClick: function (e) { return _this.changeStep(e, 1); } }, "Move along citizen")
+                ? React.createElement("a", { href: "#", id: "next-step", onClick: e => this.changeStep(e, 1) }, "Move along citizen")
                 : React.createElement("a", { href: "#", id: "next-step" }, "Next Step")));
-    };
-    Generator.prototype.changeStep = function (event, change) {
-        var tempStep = this.state.step + change;
+    }
+    changeStep(event, change) {
+        let tempStep = this.state.step + change;
         this.setState({ step: tempStep });
-    };
+    }
     // this method updates the character object when changes are observed by components
     // this method is also shit and needs to be refactored but I haven't found an elegant way to do it
-    Generator.prototype.handleCharacterChange = function (event, attribute, index, objectAttribute) {
-        var tempChar = this.state.character;
-        var characterAttribute = tempChar[attribute];
-        var temp = characterAttribute.constructor.name;
+    handleCharacterChange(event, attribute, index, objectAttribute) {
+        let tempChar = this.state.character;
+        let characterAttribute = tempChar[attribute];
+        let temp = characterAttribute.constructor.name;
         switch (temp) {
             case "String":
                 tempChar[attribute] = event.target.value;
@@ -237,14 +219,20 @@ var Generator = /** @class */ (function (_super) {
         tempChar.finalAptitudes = tempChar.GetFinalAptitudes(tempChar.egoAptitudes, tempChar.morph);
         tempChar.derivedStats = new derivedStats_1.DerivedStats(tempChar.finalAptitudes);
         this.setState({ character: tempChar });
-    };
-    Generator.prototype.handleBackgroundChange = function (event) {
-        console.log(event);
-    };
-    Generator.prototype.handleFactionChange = function (event) {
-    };
-    return Generator;
-}(React.Component));
+    }
+    renderCreationStep(step) {
+        let creationStep = [
+            React.createElement(_01_background_component_1.default, { handleBackgroundChange: this.handleBackgroundChange }),
+            React.createElement(_02_career_component_1.default, null)
+        ];
+        return creationStep[step];
+    }
+    handleBackgroundChange(object) {
+        let tempChar = this.state.character;
+        tempChar.SetBackground(object);
+        this.setState({ character: tempChar });
+    }
+}
 exports.default = Generator;
 var creationState;
 (function (creationState) {
@@ -271,31 +259,18 @@ var creationState;
 
 "use strict";
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var CharacterComponent = /** @class */ (function (_super) {
-    __extends(CharacterComponent, _super);
-    function CharacterComponent(props) {
-        var _this = _super.call(this, props) || this;
-        _this.state = {
+const React = __webpack_require__(0);
+class CharacterComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
             showCharacterSheet: false
         };
-        return _this;
     }
-    CharacterComponent.prototype.render = function () {
-        var _this = this;
+    render() {
         return (React.createElement("div", { className: "character" },
-            React.createElement("a", { href: "#", className: "toggle-sheet", onClick: function (e) { return _this.toggleCharacterSheet(e); } }, this.state.showCharacterSheet ? 'hide sheet' : 'show sheet'),
+            React.createElement("a", { href: "#", className: "toggle-sheet", onClick: e => this.toggleCharacterSheet(e) }, this.state.showCharacterSheet ? 'hide sheet' : 'show sheet'),
             this.state.showCharacterSheet ?
                 React.createElement("div", { className: "character-sheet" },
                     React.createElement("div", { className: "character-basics" },
@@ -310,32 +285,28 @@ var CharacterComponent = /** @class */ (function (_super) {
                         this.generateAptitudeLine(false, this.props.character.morph.aptitudes, "Morph", "morph", "aptitudes"),
                         this.generateAptitudeLine(false, this.props.character.finalAptitudes, "Final", "finalAptitudes")))
                 : null));
-    };
+    }
     ;
-    CharacterComponent.prototype.generateAptitudeLine = function (showAptitudeName, aptitudes, linePrefix, characterAttribute, characterObjectAttribute) {
-        var _this = this;
-        var aptitudeElements = aptitudes.map(function (number, index) {
-            return _this.generateAptitudeElement(showAptitudeName, index, aptitudeValues[index], aptitudes[index].rating.toString(), characterAttribute, characterObjectAttribute);
-        });
+    generateAptitudeLine(showAptitudeName, aptitudes, linePrefix, characterAttribute, characterObjectAttribute) {
+        const aptitudeElements = aptitudes.map((number, index) => this.generateAptitudeElement(showAptitudeName, index, aptitudeValues[index], aptitudes[index].rating.toString(), characterAttribute, characterObjectAttribute));
         return (React.createElement("div", { className: "aptitude-collection" },
             React.createElement("div", { className: "prefix" },
                 showAptitudeName ? React.createElement("div", { className: "line-prefix blank" }) : null,
                 linePrefix ? React.createElement("div", { className: "line-prefix" }, linePrefix) : null),
             aptitudeElements));
-    };
+    }
     // key is a unique identifier so React can properly update certain parts
-    CharacterComponent.prototype.generateAptitudeElement = function (showAptitudeName, key, fullName, value, characterAttribute, characterObjectAttribute) {
+    generateAptitudeElement(showAptitudeName, key, fullName, value, characterAttribute, characterObjectAttribute) {
         return (React.createElement("div", { className: "aptitude-element", key: key },
             showAptitudeName ? React.createElement("div", { className: "aptitude-name" },
                 React.createElement("div", { className: "aptitude-shorthand" }, fullName.slice(0, 3)),
                 React.createElement("div", { className: "aptitude-fullname" }, fullName)) : null,
             React.createElement("div", { className: "aptitude-value" }, value)));
-    };
-    CharacterComponent.prototype.toggleCharacterSheet = function (event) {
+    }
+    toggleCharacterSheet(event) {
         this.setState({ showCharacterSheet: !this.state.showCharacterSheet });
-    };
-    return CharacterComponent;
-}(React.Component));
+    }
+}
 exports.default = CharacterComponent;
 var aptitudeValues;
 (function (aptitudeValues) {
@@ -355,42 +326,22 @@ var aptitudeValues;
 
 "use strict";
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var React = __webpack_require__(0);
-var CharacterOutlineComponent = /** @class */ (function (_super) {
-    __extends(CharacterOutlineComponent, _super);
-    function CharacterOutlineComponent(props) {
-        return _super.call(this, props) || this;
+const React = __webpack_require__(0);
+class CharacterOutlineComponent extends React.Component {
+    constructor(props) {
+        super(props);
     }
-    CharacterOutlineComponent.prototype.render = function () {
-        var _this = this;
+    render() {
         return (React.createElement("div", { className: "creation-step" },
             React.createElement("div", { className: "creation-element" },
                 React.createElement("div", { className: "creation-key" }, "Character Name:"),
-                React.createElement("input", { type: "text", className: "creation-value", value: this.props.character.name, onChange: function (e) { return _this.props.handleCharacterChange(e, "name"); } })),
+                React.createElement("input", { type: "text", className: "creation-value", value: this.props.character.name, onChange: e => this.props.handleCharacterChange(e, "name") })),
             React.createElement("div", { className: "creation-element" },
                 React.createElement("div", { className: "creation-key" }, "Character Concept:"),
-                React.createElement("input", { type: "text", className: "creation-value", value: this.props.character.name, onChange: function (e) { return _this.props.handleCharacterChange(e, "name"); } })),
-            React.createElement("div", { className: "creation-element" },
-                React.createElement("div", { className: "creation-key" }, "Character Background:"),
-                React.createElement("input", { type: "text", className: "creation-value", value: this.props.character.name, onChange: function (e) { return _this.props.handleCharacterChange(e, "name"); } })),
-            React.createElement("div", { className: "creation-element" },
-                React.createElement("div", { className: "creation-key" }, "Character Background:"),
-                React.createElement("input", { type: "text", className: "creation-value", value: this.props.character.name, onChange: function (e) { return _this.props.handleCharacterChange(e, "name"); } })),
-            "2. Choose Background (p.\u00A0131) 3. Choose Faction (p.\u00A0132)"));
-    };
-    return CharacterOutlineComponent;
-}(React.Component));
+                React.createElement("input", { type: "text", className: "creation-value", value: this.props.character.name, onChange: e => this.props.handleCharacterChange(e, "name") }))));
+    }
+}
 exports.default = CharacterOutlineComponent;
 
 
@@ -400,48 +351,67 @@ exports.default = CharacterOutlineComponent;
 
 "use strict";
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
 /// <reference path="../../../typings.d.ts" />
-var React = __webpack_require__(0);
-var data = __webpack_require__(9);
-var BackgroundComponent = /** @class */ (function (_super) {
-    __extends(BackgroundComponent, _super);
-    function BackgroundComponent(props) {
-        var _this = _super.call(this, props) || this;
-        _this.backgroundData = data.background;
-        return _this;
+const React = __webpack_require__(0);
+const data = __webpack_require__(9);
+class BackgroundComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.backgroundData = data.background;
+        this.state = {
+            selectedBackground: ""
+        };
     }
-    BackgroundComponent.prototype.render = function () {
-        var _this = this;
-        var word = data.background;
-        console.log(word);
+    render() {
+        const word = data.background;
         return React.createElement("div", { className: "background-selection" },
-            React.createElement("select", { onChange: function (e) { return _this.props.handleBackgroundChange(_this.getBackgroundData(e.target.value)); } }, this.getBackgroundList()));
-    };
-    BackgroundComponent.prototype.getBackgroundList = function () {
-        var backgroundOptions = [];
+            React.createElement("select", { onChange: e => this.UpdateBackgroundSelection(e.target.value), id: "background-selector" }, this.GetBackgroundList()),
+            this.ShowBackgroundChoice());
+    }
+    UpdateBackgroundSelection(backgroundName) {
+        this.props.handleBackgroundChange(this.GetBackgroundData(backgroundName));
+        this.setState({ selectedBackground: backgroundName });
+    }
+    GetBackgroundList() {
+        let backgroundOptions = [];
+        backgroundOptions.push(React.createElement("option", { key: "default", className: "hidden-select", value: "default" }, "Select one"));
         for (var i = 0; i < this.backgroundData.length; i++) {
             backgroundOptions.push(React.createElement("option", { key: this.backgroundData[i].name, value: this.backgroundData[i].name }, this.backgroundData[i].name));
         }
         return backgroundOptions;
-    };
-    BackgroundComponent.prototype.getBackgroundData = function (backgroundName) {
+    }
+    GetBackgroundData(backgroundName) {
         return this.backgroundData.filter(function (object) {
             return object["name"] === backgroundName;
         });
-    };
-    return BackgroundComponent;
-}(React.Component));
+    }
+    ShowBackgroundChoice() {
+        let backgroundData = this.GetBackgroundData(this.state.selectedBackground)[0];
+        console.log(backgroundData);
+        return (React.createElement("div", null, this.state.selectedBackground
+            ? React.createElement("div", { className: "background-choice" },
+                React.createElement("div", { className: "background-name" }, backgroundData.name),
+                React.createElement("div", { className: "background-description" }, backgroundData.description),
+                React.createElement("div", { className: "background-skills" }, this.ShowBackgroundSkills(backgroundData)))
+            : React.createElement("div", null)));
+    }
+    ShowBackgroundSkills(backgroundData) {
+        let backgroundSkills = [];
+        for (let i = 0; i < backgroundData.skill.length; i++) {
+            let skill = backgroundData.skill[i];
+            let skillTypes = skill.type.map(function (type) {
+                return React.createElement("div", { key: type, className: "skill-type" }, type);
+            });
+            backgroundSkills.push(React.createElement("div", { key: skill.name + i, className: "background-skill" },
+                React.createElement("div", { className: "skill-name" }, skill.name),
+                React.createElement("div", { className: "skill-attribute" }, skill.attribute),
+                React.createElement("div", { className: "skill-rating" }, skill.rating),
+                React.createElement("div", { className: "skill-types" }, skillTypes)));
+        }
+        return backgroundSkills;
+    }
+}
 exports.default = BackgroundComponent;
 
 
@@ -457,32 +427,20 @@ module.exports = {"background":[{"name":"Colonist","description":"You were an or
 
 "use strict";
 
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
 /// <reference path="../../../typings.d.ts" />
-var React = __webpack_require__(0);
-var data = __webpack_require__(11);
-var CareerComponent = /** @class */ (function (_super) {
-    __extends(CareerComponent, _super);
-    function CareerComponent(props) {
-        return _super.call(this, props) || this;
+const React = __webpack_require__(0);
+const data = __webpack_require__(11);
+class CareerComponent extends React.Component {
+    constructor(props) {
+        super(props);
     }
-    CareerComponent.prototype.render = function () {
-        var word = data.name;
+    render() {
+        const word = data.name;
         console.log(word);
         return React.createElement("div", null, " \"Career!\" ");
-    };
-    return CareerComponent;
-}(React.Component));
+    }
+}
 exports.default = CareerComponent;
 
 
@@ -499,11 +457,13 @@ module.exports = {"background":[{"name":"Colonist","description":"You were an or
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var aptitude_1 = __webpack_require__(1);
-var morph_1 = __webpack_require__(13);
-var derivedStats_1 = __webpack_require__(2);
-var Character = /** @class */ (function () {
-    function Character(name, concept, motivation, languages, isAsync, psiLevel, morph) {
+const skill_1 = __webpack_require__(13);
+const aptitude_1 = __webpack_require__(1);
+const morph_1 = __webpack_require__(14);
+const derivedStats_1 = __webpack_require__(2);
+const background_1 = __webpack_require__(15);
+class Character {
+    constructor(name, concept, motivation, languages, isAsync, psiLevel, morph) {
         this.egoAptitudes = [];
         this.finalAptitudes = [];
         this.reputation = [];
@@ -519,8 +479,8 @@ var Character = /** @class */ (function () {
         this.isAsync = isAsync;
         this.psiLevel = psiLevel;
         if (!morph) {
-            var morphAptitudes = [];
-            for (var i = 0; i < 7; i++) {
+            let morphAptitudes = [];
+            for (let i = 0; i < 7; i++) {
                 morphAptitudes.push(new aptitude_1.Aptitude(aptitudeValues[i], 0));
             }
             this.morph = new morph_1.Morph("flat", false, "none", 20, 30, "none", "none", 0, 5000, morphAptitudes);
@@ -528,18 +488,18 @@ var Character = /** @class */ (function () {
         else {
             this.morph = morph;
         }
-        for (var i = 0; i < 7; i++) {
-            var tempAptitude = new aptitude_1.Aptitude(aptitudeValues[i], 15);
+        for (let i = 0; i < 7; i++) {
+            let tempAptitude = new aptitude_1.Aptitude(aptitudeValues[i], 15);
             this.egoAptitudes.push(tempAptitude);
         }
         this.finalAptitudes = this.GetFinalAptitudes(this.egoAptitudes, this.morph);
         this.derivedStats = new derivedStats_1.DerivedStats(this.finalAptitudes);
     }
-    Character.prototype.GetFinalAptitudes = function (aptitudeOne, morph) {
+    GetFinalAptitudes(aptitudeOne, morph) {
         if (aptitudeOne.length == morph.aptitudes.length) {
-            var tempAptitudes = [];
-            for (var i = 0; i < aptitudeOne.length; i++) {
-                var newRating = (+aptitudeOne[i].rating + +morph.aptitudes[i].rating) > morph.aptitudeMaximum ?
+            let tempAptitudes = [];
+            for (let i = 0; i < aptitudeOne.length; i++) {
+                const newRating = (+aptitudeOne[i].rating + +morph.aptitudes[i].rating) > morph.aptitudeMaximum ?
                     morph.aptitudeMaximum : +aptitudeOne[i].rating + +morph.aptitudes[i].rating;
                 tempAptitudes.push(new aptitude_1.Aptitude(aptitudeOne[i].fullName, newRating));
             }
@@ -549,15 +509,24 @@ var Character = /** @class */ (function () {
             console.log("Warning: Aptitude arrays are not of equal size. No addition performed.");
             return aptitudeOne;
         }
-    };
-    Character.prototype.SetBackground = function (background) {
-        this.background = background;
-    };
-    Character.prototype.SetFaction = function (faction) {
+    }
+    SetBackground(background) {
+        let skills = [];
+        for (let i = 0; i < background[0].skill.length; i++) {
+            let json = background[0].skill[i];
+            let aptitudeIndex = this.finalAptitudes.findIndex(item => item.shortHand.toUpperCase() === json.attribute.toUpperCase());
+            if (aptitudeIndex !== -1) {
+                let newSkill = new skill_1.Skill(json.name, this.finalAptitudes[aptitudeIndex], json.rating, json.type, [""]);
+                skills.push(newSkill);
+            }
+        }
+        let bg = new background_1.Background(background[0].name, background[0].description, skills);
+        this.background = bg;
+    }
+    SetFaction(faction) {
         this.faction = faction;
-    };
-    return Character;
-}());
+    }
+}
 exports.Character = Character;
 var aptitudeValues;
 (function (aptitudeValues) {
@@ -578,8 +547,40 @@ var aptitudeValues;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var Morph = /** @class */ (function () {
-    function Morph(name, isSynthMorph, ware, aptitudeMaximum, durability, advantages, disadvantages, cpCost, creditCost, aptitudes) {
+class Skill {
+    constructor(name, aptitude, rating, type, specializations) {
+        this.type = [];
+        this.specializations = [];
+        this.name = name;
+        this.linkedAptitude = aptitude;
+        this.rating = rating;
+        this.type = type;
+        this.specializations = specializations;
+    }
+    AddSpecialization(newSpecialization) {
+        this.specializations.push(newSpecialization);
+    }
+    RemoveSpecialization(oldSpecialization) {
+        if (this.specializations.length > 0) {
+            var index = this.specializations.indexOf(oldSpecialization, 0);
+            if (index > -1) {
+                this.specializations.splice(index, 1);
+            }
+        }
+    }
+}
+exports.Skill = Skill;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+class Morph {
+    constructor(name, isSynthMorph, ware, aptitudeMaximum, durability, advantages, disadvantages, cpCost, creditCost, aptitudes) {
         this.name = name;
         this.isSynthMorph = isSynthMorph;
         this.ware = ware;
@@ -592,9 +593,26 @@ var Morph = /** @class */ (function () {
         this.cpCost = cpCost;
         this.creditCost = creditCost;
     }
-    return Morph;
-}());
+}
 exports.Morph = Morph;
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+class Background {
+    constructor(name, description, skills) {
+        this.skills = [];
+        this.name = name;
+        this.description = description;
+        this.skills = skills;
+    }
+}
+exports.Background = Background;
 
 
 /***/ })

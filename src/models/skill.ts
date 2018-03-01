@@ -2,14 +2,18 @@ import { Aptitude } from "./aptitude";
 
 export class Skill {
     name: string;
-    isKnowledge:boolean;
     linkedAptitude: Aptitude;
-    ranks: number;
+    rating: number;
+    type:string[] = [];
     specializations: string[] = [];
 
-    constructor()
+    constructor(name:string, aptitude:Aptitude, rating:number, type:string[], specializations:string[])
     {
-        
+        this.name = name;
+        this.linkedAptitude = aptitude;
+        this.rating = rating;
+        this.type = type;
+        this.specializations = specializations;
     }
 
     public AddSpecialization(newSpecialization: string) {

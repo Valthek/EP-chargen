@@ -1,0 +1,18 @@
+.background-selection {
+    #background-selector {
+        .hidden-select {
+            display: none;
+        }
+    }
+    .background-choice {
+        .background-name {}
+        .background-description {}
+        .background-skills {
+            display: flex;
+            align-items: left;
+            .background-skill{
+                width:100%;
+            }
+        }
+    }
+}

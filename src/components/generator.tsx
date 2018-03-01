@@ -6,6 +6,7 @@ import BackgroundComponent from "./creation-steps/01-background-component";
 import CareerComponent from "./creation-steps/02-career-component";
 import { Character } from "../models/character";
 import { DerivedStats } from "../models/derivedStats";
+import { Skill } from "../models/skill";
 
 export default class Generator extends React.Component<any, any> {
     constructor(props: any) {
@@ -15,10 +16,8 @@ export default class Generator extends React.Component<any, any> {
             step: 0
         }
         this.handleCharacterChange = this.handleCharacterChange.bind(this);
+        this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
     }
-    creationStep: JSX.Element[] = [
-    <BackgroundComponent handleBackgroundChange={this.handleBackgroundChange}/>, 
-    <CareerComponent />]
 
     render() {
         return (
@@ -30,9 +29,8 @@ export default class Generator extends React.Component<any, any> {
                 <CharacterOutlineComponent
                     character={this.state.character}
                     selectBackground={this.handleBackgroundChange}
-                    selectFaction={this.handleFactionChange}
                 />
-                {this.creationStep[this.state.step]}
+                {this.renderCreationStep(this.state.step)}
                 {this.state.step > 0
                     ? <a href="#" id="previous-step" onClick={e => this.changeStep(e, -1)}>Previous Step</a>
                     : <a href="#" id="previous-step">Previous Step</a>}
@@ -106,12 +104,17 @@ export default class Generator extends React.Component<any, any> {
         this.setState({ character: tempChar })
     }
 
-    public handleBackgroundChange(event: any): void {
-        console.log(event);
+    public renderCreationStep(step: number) {
+        let creationStep: JSX.Element[] = [
+            <BackgroundComponent handleBackgroundChange={this.handleBackgroundChange} />,
+            <CareerComponent />];
+        return creationStep[step];
     }
 
-    public handleFactionChange(event: any): void {
-
+    public handleBackgroundChange(object: JSON): void {
+        let tempChar = this.state.character;
+        tempChar.SetBackground(object);        
+        this.setState({character:tempChar});
     }
 }
 

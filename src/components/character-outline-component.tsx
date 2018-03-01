@@ -22,21 +22,6 @@ export default class CharacterOutlineComponent extends React.Component<any, any>
                         value={this.props.character.name}
                         onChange={e => this.props.handleCharacterChange(e, "name")}></input>
                 </div>
-                <div className="creation-element">
-                    <div className="creation-key">Character Background:</div>
-                    <input type="text" className="creation-value"
-                        value={this.props.character.name}
-                        onChange={e => this.props.handleCharacterChange(e, "name")}></input>
-                </div>
-                <div className="creation-element">
-                    <div className="creation-key">Character Background:</div>
-                    <input type="text" className="creation-value"
-                        value={this.props.character.name}
-                        onChange={e => this.props.handleCharacterChange(e, "name")}></input>
-                </div>
-
-                2. Choose Background (p. 131) 
-                3. Choose Faction (p. 132) 
             </div >)
     }
 }

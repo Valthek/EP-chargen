@@ -3,11 +3,12 @@ import { Aptitude } from "./aptitude";
 import { Morph } from "./morph";
 import { Sleight } from "./sleight";
 import { DerivedStats } from "./derivedStats";
+import { Background } from "./background";
 
 export class Character {
     public name: string;
-    public concept:string;
-    public background: string;
+    public concept: string;
+    public background: Background;
     public faction: string;
     public morph: Morph;
     public motivation: string;
@@ -24,7 +25,7 @@ export class Character {
     public chiSleights: Sleight[] = [];
     public gammaSleights: Sleight[] = [];
 
-    constructor(name: string, concept:string, motivation: string, languages: string, isAsync: boolean, psiLevel: number, morph?: Morph) {
+    constructor(name: string, concept: string, motivation: string, languages: string, isAsync: boolean, psiLevel: number, morph?: Morph) {
         this.name = name;
         this.concept = concept;
         this.motivation = motivation;
@@ -63,11 +64,21 @@ export class Character {
         }
     }
 
-    public SetBackground(background:string){
-        this.background = background;
+    public SetBackground(background: any) {
+        let skills: Skill[] = [];
+        for (let i = 0; i < background[0].skill.length; i++) {
+            let json = background[0].skill[i];
+            let aptitudeIndex = this.finalAptitudes.findIndex(item => item.shortHand.toUpperCase() === json.attribute.toUpperCase());
+            if (aptitudeIndex !== -1) {
+                let newSkill: Skill = new Skill(json.name, this.finalAptitudes[aptitudeIndex], json.rating, json.type, [""]);
+                skills.push(newSkill)
+            }
+        }
+        let bg = new Background(background[0].name, background[0].description, skills);
+        this.background = bg;
     }
 
-    public SetFaction(faction:string){
+    public SetFaction(faction: string) {
         this.faction = faction;
     }
 }
