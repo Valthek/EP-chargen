@@ -31,13 +31,15 @@ export default class Generator extends React.Component<any, any> {
                     selectBackground={this.handleBackgroundChange}
                 />
                 {this.renderCreationStep(this.state.step)}
-                {this.state.step > 0
-                    ? <a href="#" id="previous-step" onClick={e => this.changeStep(e, -1)}>Previous Step</a>
-                    : <a href="#" id="previous-step">Previous Step</a>}
-                {creationState[this.state.step]}
-                {this.state.step < 13
-                    ? <a href="#" id="next-step" onClick={e => this.changeStep(e, 1)}>Move along citizen</a>
-                    : <a href="#" id="next-step">Next Step</a>}
+                <div className="footer-bar">
+                    {this.state.step > 0
+                        ? <a href="#" id="previous-step" className="button" onClick={e => this.changeStep(e, -1)}>Previous Step</a>
+                        : <a href="#" id="previous-step" className="button inactive">Previous Step</a>}
+                    <div className="creation-state">{creationState[this.state.step]}</div>
+                    {this.state.step < 13
+                        ? <a href="#" id="next-step" className="button" onClick={e => this.changeStep(e, 1)}>Next Step</a>
+                        : <a href="#" id="next-step" className="button inactive">Next Step</a>}
+                </div>
             </div>
         )
     }
@@ -113,8 +115,8 @@ export default class Generator extends React.Component<any, any> {
 
     public handleBackgroundChange(object: JSON): void {
         let tempChar = this.state.character;
-        tempChar.SetBackground(object);        
-        this.setState({character:tempChar});
+        tempChar.SetBackground(object);
+        this.setState({ character: tempChar });
     }
 }
 

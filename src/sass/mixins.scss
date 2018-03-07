@@ -1,6 +1,6 @@
-@mixin bordered-table($borderColor, $backGroundColor, $focusColor, $width, $height) {
+@mixin bordered-table($borderColor, $backgroundColor, $focusColor, $width, $height) {
     border: 1px solid $borderColor;
-    background-color: $backGroundColor;
+    background-color: $backgroundColor;
     line-height: 34px;
     height: $height;
     margin-right: -1px;
@@ -11,5 +11,30 @@
     &:focus {
         outline: none;
         background-color:$focusColor;
+    }
+    &:hover{
+        outline:none;
+        background-color:$focusColor;
+    }
+}
+
+@mixin button($backgroundColor, $focusColor, $textColor, $inactiveColor, $content){
+    background-color: $backgroundColor;
+    line-height: 34px;
+    height: 35px;
+    width: 140px;
+    display:block;
+    color: $textColor;
+    text-align: center;
+
+    margin: 10px;
+    content: $content;
+    
+    &:focus,
+    &:hover{
+        background-color: $focusColor;
+    }
+    &.inactive{
+        background-color: $inactiveColor;
     }
 }

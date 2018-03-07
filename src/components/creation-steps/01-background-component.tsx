@@ -48,9 +48,6 @@ export default class BackgroundComponent extends React.Component<any, any> {
         return (<div >
             {this.state.selectedBackground
                 ? <div className="background-choice">
-                    <div className="background-name">
-                        {backgroundData.name}
-                    </div>
                     <div className="background-description">
                         {backgroundData.description}
                     </div>
@@ -58,25 +55,50 @@ export default class BackgroundComponent extends React.Component<any, any> {
                         {this.ShowBackgroundSkills(backgroundData)}
                     </div>
                 </div>
-                : <div></div>
+                : <div className="background-help">Choose a background via the selector.</div>
             }
         </div>)
     }
     ShowBackgroundSkills(backgroundData: any) {
         let backgroundSkills: JSX.Element[] = [];
+        backgroundSkills.push(<div key={'header'} className="background-skill">
+            <div className="skill header name">Skill</div>
+            <div className="skill header attribute">Linked Attribute</div>
+            <div className="skill header rating">Rating</div>
+            <div className="skill header types">Type</div>
+        </div>)
         for (let i = 0; i < backgroundData.skill.length; i++) {
             let skill = backgroundData.skill[i];
             let skillTypes = skill.type.map(function (type) {
-                return <div key={type} className="skill-type">{type}</div>
+                return <div key={type} className="skill type">{type}</div>
             });
             backgroundSkills.push(<div key={skill.name + i} className="background-skill">
-                <div className="skill-name">{skill.name}</div>
-                <div className="skill-attribute">{skill.attribute}</div>
-                <div className="skill-rating">{skill.rating}</div>
-                <div className="skill-types">{skillTypes}</div>
+                {this.GetFieldSelector(skill)}
+                <div className="skill attribute">{skill.attribute}</div>
+                <div className="skill rating">{skill.rating}</div>
+                <div className="skill types">{skillTypes}</div>
             </div>)
         }
         return backgroundSkills;
+    }
+
+    GetFieldSelector(skill: any) {
+        let fieldOptions: JSX.Element[] = [];
+        if (skill.field.length > 0) {
+            for (let o = 0; o < skill.field.length; o++) {
+                fieldOptions.push(
+                    <option key={skill.field[o]} value={skill.field[o]}>{skill.name}: {skill.field[o]}</option>
+                )
+            }            
+        return (<select onChange={e => this.UpdateFieldSelection(e.target.value)} id="field-selector" className="skill identity">{fieldOptions}</select>);
+        }
+        else
+        {
+            return <div className="skill identity">{skill.name}</div>
+        }
+    }
+    UpdateFieldSelection(event: any) {
+
     }
 
 }

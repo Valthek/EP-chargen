@@ -5,11 +5,11 @@
             "description": "You were an original settler of Earth orbit, Luna, Mars, or a smaller outpost elsewhere, before the Fall.", 
             "skill": 
             [
-                {"name":"Free Fall", "attribute": "SOM", "rating": 40, "type": ["Active", "Physical"]},
+                {"name":"Free Fall", "field": [], "attribute": "SOM", "rating": 40, "type": ["Active", "Physical"]},
                 {"name":"Hardware", "field": [ "Aerospace", "Electronics", "Industrial" ], "attribute": "COG", "rating": 40, "type": ["Active", "Technical"]},
-                {"name":"Interface", "attribute": "COG","rating": 30, "type": ["Active", "Technical"]},
+                {"name":"Interface", "field": [], "attribute": "COG","rating": 30, "type": ["Active", "Technical"]},
                 {"name":"Pilot", "field": [ "Air", "Ground", "Nautical", "Space" ], "attribute": "REF","rating": 30, "type": ["Active", "Vehicle"]},
-                {"name":"Survival", "attribute": "INT", "rating": 30, "type": ["Active", "Mental"]},
+                {"name":"Survival", "field": [], "attribute": "INT", "rating": 30, "type": ["Active", "Mental"]},
                 {"name":"Know", "field": [  "Administration", "Flight Crew Ops", "Hab Ops" ], "attribute": "INT","rating": 60, "type": ["Know"]},
                 {"name":"Know", "field": [ "Botany", "Chemistry", "Engineering", "Physics"  ], "attribute": "COG","rating": 30, "type": ["Know"]}
             ]
@@ -19,12 +19,12 @@
             "description": "On Earth, you lived a life of precarious but protected stability in a defended enclave.", 
             "skill": 
             [
-                {"name":"Athletics", "attribute": "SOM", "rating": 40, "type": ["Active", "Physical"]},
-                {"name":"Interface", "attribute": "COG", "rating": 40, "type": ["Active", "Technical"]},
-                {"name":"Kinesics", "attribute": "SAV",  "rating": 30, "type": ["Active", "Social"]},
-                {"name":"Persuade", "attribute": "SAV", "rating": 20, "type": ["Active", "Social"]},
+                {"name":"Athletics", "field": [], "attribute": "SOM", "rating": 40, "type": ["Active", "Physical"]},
+                {"name":"Interface", "field": [], "attribute": "COG", "rating": 40, "type": ["Active", "Technical"]},
+                {"name":"Kinesics", "field": [], "attribute": "SAV",  "rating": 30, "type": ["Active", "Social"]},
+                {"name":"Persuade", "field": [], "attribute": "SAV", "rating": 20, "type": ["Active", "Social"]},
                 {"name":"Pilot:", "field": [ "Ground" ], "attribute": "REF", "rating": 20, "type": ["Active", "Vehicle"]},
-                {"name":"Program", "attribute": "COG", "rating": 20, "type": ["Active", "Technical"]},
+                {"name":"Program", "field": [], "attribute": "COG", "rating": 20, "type": ["Active", "Technical"]},
                 {"name":"Know:", "field": [ "Celebrity Gossip", "Pop Culture", "Sports" ], "attribute": "INT", "rating": 60, "type": ["Know"]},
                 {"name":"Know:", "field": [ "Economics", "Education", "Psychology" ], "attribute": "COG", "rating": 30, "type": ["Know"]}
             ]
@@ -34,11 +34,11 @@
             "description": "You were a cog in the wheels of hypercapitalism, taking whatever gigs came your way.", 
             "skill": 
             [
-                {"name":"Interface", "attribute": "COG", "rating": 40, "type": ["Active", "Technical"]},
-                {"name":"Kinesics", "attribute": "SAV",  "rating": 20, "type": ["Active", "Social"]},
-                {"name":"Persuade", "attribute": "SAV", "rating": 40, "type": ["Active", "Social"]},
-                {"name":"Program", "attribute": "COG", "rating": 30, "type": ["Active", "Technical"]},
-                {"name":"Research", "attribute": "INT", "rating": 40, "type": ["Active", "Technical"]},
+                {"name":"Interface", "field": [], "attribute": "COG", "rating": 40, "type": ["Active", "Technical"]},
+                {"name":"Kinesics", "field": [], "attribute": "SAV",  "rating": 20, "type": ["Active", "Social"]},
+                {"name":"Persuade", "field": [], "attribute": "SAV", "rating": 40, "type": ["Active", "Social"]},
+                {"name":"Program", "field": [], "attribute": "COG", "rating": 30, "type": ["Active", "Technical"]},
+                {"name":"Research", "field": [], "attribute": "INT", "rating": 40, "type": ["Active", "Technical"]},
                 {"name":"Know:", "field": [ "Accounting", "Data Processing", "Freelancing" ], "attribute": "COG", "rating": 60, "type": ["Know"]},
                 {"name":"Know:", "field": [ "Craft Beers", "Music (choose a genre)", "Sports" ], "attribute": "INT", "rating": 30, "type": ["Know"]}
             ]
@@ -48,11 +48,11 @@
             "description": "You lived in the top percent, with abundant wealth and resources.", 
             "skill": 
             [
-                {"name":"Athletics", "attribute": "SOM", "rating": 30, "type": ["Active", "Physical"]},
-                {"name":"Deceive", "attribute": "SAV", "rating": 30, "type": ["Active", "Social"]},
-                {"name":"Kinesics", "attribute": "SAV",  "rating": 50, "type": ["Active", "Social"]},
-                {"name":"Persuade", "attribute": "SAV", "rating": 30, "type": ["Active", "Social"]},
-                {"name":"Provoke", "attribute": "SAV", "rating": 30, "type": ["Active", "Social"]},
+                {"name":"Athletics", "field": [], "attribute": "SOM", "rating": 30, "type": ["Active", "Physical"]},
+                {"name":"Deceive", "field": [], "attribute": "SAV", "rating": 30, "type": ["Active", "Social"]},
+                {"name":"Kinesics", "field": [], "attribute": "SAV",  "rating": 50, "type": ["Active", "Social"]},
+                {"name":"Persuade", "field": [], "attribute": "SAV", "rating": 30, "type": ["Active", "Social"]},
+                {"name":"Provoke", "field": [], "attribute": "SAV", "rating": 30, "type": ["Active", "Social"]},
                 {"name":"Know:", "field": [ "Economics", "Law", "Political Science" ], "attribute": "COG", "rating": 60, "type": ["Know"]},
                 {"name":"Know:", "field": [ "Fine Art", "Hypercorp Politics", "Stock Market" ], "attribute": "INT", "rating": 30, "type": ["Know"]}
             ]

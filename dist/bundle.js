@@ -158,13 +158,14 @@ class Generator extends React.Component {
             React.createElement(character_component_1.default, { character: this.state.character, handleCharacterChange: this.handleCharacterChange }),
             React.createElement(character_outline_component_1.default, { character: this.state.character, selectBackground: this.handleBackgroundChange }),
             this.renderCreationStep(this.state.step),
-            this.state.step > 0
-                ? React.createElement("a", { href: "#", id: "previous-step", onClick: e => this.changeStep(e, -1) }, "Previous Step")
-                : React.createElement("a", { href: "#", id: "previous-step" }, "Previous Step"),
-            creationState[this.state.step],
-            this.state.step < 13
-                ? React.createElement("a", { href: "#", id: "next-step", onClick: e => this.changeStep(e, 1) }, "Move along citizen")
-                : React.createElement("a", { href: "#", id: "next-step" }, "Next Step")));
+            React.createElement("div", { className: "footer-bar" },
+                this.state.step > 0
+                    ? React.createElement("a", { href: "#", id: "previous-step", className: "button", onClick: e => this.changeStep(e, -1) }, "Previous Step")
+                    : React.createElement("a", { href: "#", id: "previous-step", className: "button inactive" }, "Previous Step"),
+                React.createElement("div", { className: "creation-state" }, creationState[this.state.step]),
+                this.state.step < 13
+                    ? React.createElement("a", { href: "#", id: "next-step", className: "button", onClick: e => this.changeStep(e, 1) }, "Next Step")
+                    : React.createElement("a", { href: "#", id: "next-step", className: "button inactive" }, "Next Step"))));
     }
     changeStep(event, change) {
         let tempStep = this.state.step + change;
@@ -391,25 +392,46 @@ class BackgroundComponent extends React.Component {
         console.log(backgroundData);
         return (React.createElement("div", null, this.state.selectedBackground
             ? React.createElement("div", { className: "background-choice" },
-                React.createElement("div", { className: "background-name" }, backgroundData.name),
                 React.createElement("div", { className: "background-description" }, backgroundData.description),
                 React.createElement("div", { className: "background-skills" }, this.ShowBackgroundSkills(backgroundData)))
-            : React.createElement("div", null)));
+            : React.createElement("div", { className: "background-help" }, "Choose a background via the selector.")));
     }
     ShowBackgroundSkills(backgroundData) {
         let backgroundSkills = [];
+        backgroundSkills.push(React.createElement("div", { key: 'header', className: "background-skill" },
+            React.createElement("div", { className: "skill header name" }, "Skill"),
+            React.createElement("div", { className: "skill header attribute" }, "Linked Attribute"),
+            React.createElement("div", { className: "skill header rating" }, "Rating"),
+            React.createElement("div", { className: "skill header types" }, "Type")));
         for (let i = 0; i < backgroundData.skill.length; i++) {
             let skill = backgroundData.skill[i];
             let skillTypes = skill.type.map(function (type) {
-                return React.createElement("div", { key: type, className: "skill-type" }, type);
+                return React.createElement("div", { key: type, className: "skill type" }, type);
             });
             backgroundSkills.push(React.createElement("div", { key: skill.name + i, className: "background-skill" },
-                React.createElement("div", { className: "skill-name" }, skill.name),
-                React.createElement("div", { className: "skill-attribute" }, skill.attribute),
-                React.createElement("div", { className: "skill-rating" }, skill.rating),
-                React.createElement("div", { className: "skill-types" }, skillTypes)));
+                this.GetFieldSelector(skill),
+                React.createElement("div", { className: "skill attribute" }, skill.attribute),
+                React.createElement("div", { className: "skill rating" }, skill.rating),
+                React.createElement("div", { className: "skill types" }, skillTypes)));
         }
         return backgroundSkills;
+    }
+    GetFieldSelector(skill) {
+        let fieldOptions = [];
+        if (skill.field.length > 0) {
+            for (let o = 0; o < skill.field.length; o++) {
+                fieldOptions.push(React.createElement("option", { key: skill.field[o], value: skill.field[o] },
+                    skill.name,
+                    ": ",
+                    skill.field[o]));
+            }
+            return (React.createElement("select", { onChange: e => this.UpdateFieldSelection(e.target.value), id: "field-selector", className: "skill identity" }, fieldOptions));
+        }
+        else {
+            return React.createElement("div", { className: "skill identity" }, skill.name);
+        }
+    }
+    UpdateFieldSelection(event) {
     }
 }
 exports.default = BackgroundComponent;
@@ -419,7 +441,7 @@ exports.default = BackgroundComponent;
 /* 9 */
 /***/ (function(module, exports) {
 
-module.exports = {"background":[{"name":"Colonist","description":"You were an original settler of Earth orbit, Luna, Mars, or a smaller outpost elsewhere, before the Fall.","skill":[{"name":"Free Fall","attribute":"SOM","rating":40,"type":["Active","Physical"]},{"name":"Hardware","field":["Aerospace","Electronics","Industrial"],"attribute":"COG","rating":40,"type":["Active","Technical"]},{"name":"Interface","attribute":"COG","rating":30,"type":["Active","Technical"]},{"name":"Pilot","field":["Air","Ground","Nautical","Space"],"attribute":"REF","rating":30,"type":["Active","Vehicle"]},{"name":"Survival","attribute":"INT","rating":30,"type":["Active","Mental"]},{"name":"Know","field":["Administration","Flight Crew Ops","Hab Ops"],"attribute":"INT","rating":60,"type":["Know"]},{"name":"Know","field":["Botany","Chemistry","Engineering","Physics"],"attribute":"COG","rating":30,"type":["Know"]}]},{"name":"Enclaver","description":"On Earth, you lived a life of precarious but protected stability in a defended enclave.","skill":[{"name":"Athletics","attribute":"SOM","rating":40,"type":["Active","Physical"]},{"name":"Interface","attribute":"COG","rating":40,"type":["Active","Technical"]},{"name":"Kinesics","attribute":"SAV","rating":30,"type":["Active","Social"]},{"name":"Persuade","attribute":"SAV","rating":20,"type":["Active","Social"]},{"name":"Pilot:","field":["Ground"],"attribute":"REF","rating":20,"type":["Active","Vehicle"]},{"name":"Program","attribute":"COG","rating":20,"type":["Active","Technical"]},{"name":"Know:","field":["Celebrity Gossip","Pop Culture","Sports"],"attribute":"INT","rating":60,"type":["Know"]},{"name":"Know:","field":["Economics","Education","Psychology"],"attribute":"COG","rating":30,"type":["Know"]}]},{"name":"Freelancer","description":"You were a cog in the wheels of hypercapitalism, taking whatever gigs came your way.","skill":[{"name":"Interface","attribute":"COG","rating":40,"type":["Active","Technical"]},{"name":"Kinesics","attribute":"SAV","rating":20,"type":["Active","Social"]},{"name":"Persuade","attribute":"SAV","rating":40,"type":["Active","Social"]},{"name":"Program","attribute":"COG","rating":30,"type":["Active","Technical"]},{"name":"Research","attribute":"INT","rating":40,"type":["Active","Technical"]},{"name":"Know:","field":["Accounting","Data Processing","Freelancing"],"attribute":"COG","rating":60,"type":["Know"]},{"name":"Know:","field":["Craft Beers","Music (choose a genre)","Sports"],"attribute":"INT","rating":30,"type":["Know"]}]},{"name":"Hyperelite","description":"You lived in the top percent, with abundant wealth and resources.","skill":[{"name":"Athletics","attribute":"SOM","rating":30,"type":["Active","Physical"]},{"name":"Deceive","attribute":"SAV","rating":30,"type":["Active","Social"]},{"name":"Kinesics","attribute":"SAV","rating":50,"type":["Active","Social"]},{"name":"Persuade","attribute":"SAV","rating":30,"type":["Active","Social"]},{"name":"Provoke","attribute":"SAV","rating":30,"type":["Active","Social"]},{"name":"Know:","field":["Economics","Law","Political Science"],"attribute":"COG","rating":60,"type":["Know"]},{"name":"Know:","field":["Fine Art","Hypercorp Politics","Stock Market"],"attribute":"INT","rating":30,"type":["Know"]}]}]}
+module.exports = {"background":[{"name":"Colonist","description":"You were an original settler of Earth orbit, Luna, Mars, or a smaller outpost elsewhere, before the Fall.","skill":[{"name":"Free Fall","field":[],"attribute":"SOM","rating":40,"type":["Active","Physical"]},{"name":"Hardware","field":["Aerospace","Electronics","Industrial"],"attribute":"COG","rating":40,"type":["Active","Technical"]},{"name":"Interface","field":[],"attribute":"COG","rating":30,"type":["Active","Technical"]},{"name":"Pilot","field":["Air","Ground","Nautical","Space"],"attribute":"REF","rating":30,"type":["Active","Vehicle"]},{"name":"Survival","field":[],"attribute":"INT","rating":30,"type":["Active","Mental"]},{"name":"Know","field":["Administration","Flight Crew Ops","Hab Ops"],"attribute":"INT","rating":60,"type":["Know"]},{"name":"Know","field":["Botany","Chemistry","Engineering","Physics"],"attribute":"COG","rating":30,"type":["Know"]}]},{"name":"Enclaver","description":"On Earth, you lived a life of precarious but protected stability in a defended enclave.","skill":[{"name":"Athletics","field":[],"attribute":"SOM","rating":40,"type":["Active","Physical"]},{"name":"Interface","field":[],"attribute":"COG","rating":40,"type":["Active","Technical"]},{"name":"Kinesics","field":[],"attribute":"SAV","rating":30,"type":["Active","Social"]},{"name":"Persuade","field":[],"attribute":"SAV","rating":20,"type":["Active","Social"]},{"name":"Pilot:","field":["Ground"],"attribute":"REF","rating":20,"type":["Active","Vehicle"]},{"name":"Program","field":[],"attribute":"COG","rating":20,"type":["Active","Technical"]},{"name":"Know:","field":["Celebrity Gossip","Pop Culture","Sports"],"attribute":"INT","rating":60,"type":["Know"]},{"name":"Know:","field":["Economics","Education","Psychology"],"attribute":"COG","rating":30,"type":["Know"]}]},{"name":"Freelancer","description":"You were a cog in the wheels of hypercapitalism, taking whatever gigs came your way.","skill":[{"name":"Interface","field":[],"attribute":"COG","rating":40,"type":["Active","Technical"]},{"name":"Kinesics","field":[],"attribute":"SAV","rating":20,"type":["Active","Social"]},{"name":"Persuade","field":[],"attribute":"SAV","rating":40,"type":["Active","Social"]},{"name":"Program","field":[],"attribute":"COG","rating":30,"type":["Active","Technical"]},{"name":"Research","field":[],"attribute":"INT","rating":40,"type":["Active","Technical"]},{"name":"Know:","field":["Accounting","Data Processing","Freelancing"],"attribute":"COG","rating":60,"type":["Know"]},{"name":"Know:","field":["Craft Beers","Music (choose a genre)","Sports"],"attribute":"INT","rating":30,"type":["Know"]}]},{"name":"Hyperelite","description":"You lived in the top percent, with abundant wealth and resources.","skill":[{"name":"Athletics","field":[],"attribute":"SOM","rating":30,"type":["Active","Physical"]},{"name":"Deceive","field":[],"attribute":"SAV","rating":30,"type":["Active","Social"]},{"name":"Kinesics","field":[],"attribute":"SAV","rating":50,"type":["Active","Social"]},{"name":"Persuade","field":[],"attribute":"SAV","rating":30,"type":["Active","Social"]},{"name":"Provoke","field":[],"attribute":"SAV","rating":30,"type":["Active","Social"]},{"name":"Know:","field":["Economics","Law","Political Science"],"attribute":"COG","rating":60,"type":["Know"]},{"name":"Know:","field":["Fine Art","Hypercorp Politics","Stock Market"],"attribute":"INT","rating":30,"type":["Know"]}]}]}
 
 /***/ }),
 /* 10 */
