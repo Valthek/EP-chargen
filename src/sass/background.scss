@@ -1,22 +1,19 @@
 .background-selection {
-    max-width: 900px;
-    margin: 25px 5%;
+    min-width: 900px;
+    margin: 25px 0;
     display:flex;
     flex-direction: column;
     #background-selector {
         font-weight: bold;
-        border: none;
         text-align-last:center;
         .hidden-select {
             display: none;
         }
         &:focus,
         &:active{
-            border:none;
             outline-color: $aptitudeTableBorder;
             option{
                 text-align:center;
-                border:none;
             }
         }
         

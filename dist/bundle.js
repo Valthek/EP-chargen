@@ -148,7 +148,8 @@ class Generator extends React.Component {
         super(props);
         this.state = {
             character: new character_1.Character("", "", "", "", false, 0),
-            step: 0
+            step: 0,
+            selectedBackground: ""
         };
         this.handleCharacterChange = this.handleCharacterChange.bind(this);
         this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
@@ -158,11 +159,16 @@ class Generator extends React.Component {
             React.createElement(character_component_1.default, { character: this.state.character, handleCharacterChange: this.handleCharacterChange }),
             React.createElement(character_outline_component_1.default, { character: this.state.character, selectBackground: this.handleBackgroundChange }),
             this.renderCreationStep(this.state.step),
+            React.createElement("div", null, this.state.selectedBackground),
             React.createElement("div", { className: "footer-bar" },
                 this.state.step > 0
                     ? React.createElement("a", { href: "#", id: "previous-step", className: "button", onClick: e => this.changeStep(e, -1) }, "Previous Step")
                     : React.createElement("a", { href: "#", id: "previous-step", className: "button inactive" }, "Previous Step"),
-                React.createElement("div", { className: "creation-state" }, creationState[this.state.step]),
+                React.createElement("div", { className: "creation-state" },
+                    creationState[this.state.step],
+                    " (",
+                    this.state.step + 1,
+                    "/14)"),
                 this.state.step < 13
                     ? React.createElement("a", { href: "#", id: "next-step", className: "button", onClick: e => this.changeStep(e, 1) }, "Next Step")
                     : React.createElement("a", { href: "#", id: "next-step", className: "button inactive" }, "Next Step"))));
@@ -223,7 +229,7 @@ class Generator extends React.Component {
     }
     renderCreationStep(step) {
         let creationStep = [
-            React.createElement(_01_background_component_1.default, { handleBackgroundChange: this.handleBackgroundChange }),
+            React.createElement(_01_background_component_1.default, { handleBackgroundChange: this.handleBackgroundChange, selectedBackground: this.state.selectedBackground }),
             React.createElement(_02_career_component_1.default, null)
         ];
         return creationStep[step];
@@ -231,7 +237,9 @@ class Generator extends React.Component {
     handleBackgroundChange(object) {
         let tempChar = this.state.character;
         tempChar.SetBackground(object);
-        this.setState({ character: tempChar });
+        this.setState((state) => ({ character: tempChar }));
+        let newBackground = object[0].name;
+        this.setState((state) => ({ selectedBackground: newBackground }));
     }
 }
 exports.default = Generator;
@@ -360,19 +368,15 @@ class BackgroundComponent extends React.Component {
     constructor(props) {
         super(props);
         this.backgroundData = data.background;
-        this.state = {
-            selectedBackground: ""
-        };
     }
     render() {
         const word = data.background;
         return React.createElement("div", { className: "background-selection" },
-            React.createElement("select", { onChange: e => this.UpdateBackgroundSelection(e.target.value), id: "background-selector" }, this.GetBackgroundList()),
+            React.createElement("select", { defaultValue: this.props.selectedBackground, onChange: e => this.UpdateBackgroundSelection(e.target.value), id: "background-selector" }, this.GetBackgroundList()),
             this.ShowBackgroundChoice());
     }
     UpdateBackgroundSelection(backgroundName) {
         this.props.handleBackgroundChange(this.GetBackgroundData(backgroundName));
-        this.setState({ selectedBackground: backgroundName });
     }
     GetBackgroundList() {
         let backgroundOptions = [];
@@ -388,9 +392,8 @@ class BackgroundComponent extends React.Component {
         });
     }
     ShowBackgroundChoice() {
-        let backgroundData = this.GetBackgroundData(this.state.selectedBackground)[0];
-        console.log(backgroundData);
-        return (React.createElement("div", null, this.state.selectedBackground
+        let backgroundData = this.GetBackgroundData(this.props.selectedBackground)[0];
+        return (React.createElement("div", null, this.props.selectedBackground
             ? React.createElement("div", { className: "background-choice" },
                 React.createElement("div", { className: "background-description" }, backgroundData.description),
                 React.createElement("div", { className: "background-skills" }, this.ShowBackgroundSkills(backgroundData)))
@@ -422,7 +425,7 @@ class BackgroundComponent extends React.Component {
             for (let o = 0; o < skill.field.length; o++) {
                 fieldOptions.push(React.createElement("option", { key: skill.field[o], value: skill.field[o] },
                     skill.name,
-                    ": ",
+                    " ",
                     skill.field[o]));
             }
             return (React.createElement("select", { onChange: e => this.UpdateFieldSelection(e.target.value), id: "field-selector", className: "skill identity" }, fieldOptions));

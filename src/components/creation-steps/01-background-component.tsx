@@ -5,16 +5,13 @@ import * as data from '../../data/background-data.json';
 export default class BackgroundComponent extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
-        this.state = {
-            selectedBackground: ""
-        }
     }
     backgroundData = (data as any).background;
 
     render() {
         const word = (data as any).background;
         return <div className="background-selection">
-            <select onChange={e => this.UpdateBackgroundSelection(e.target.value)}
+            <select defaultValue={this.props.selectedBackground} onChange={e => this.UpdateBackgroundSelection(e.target.value)}
                 id="background-selector">
                 {this.GetBackgroundList()}
             </select>
@@ -24,14 +21,13 @@ export default class BackgroundComponent extends React.Component<any, any> {
 
     UpdateBackgroundSelection(backgroundName: any) {
         this.props.handleBackgroundChange(this.GetBackgroundData(backgroundName));
-        this.setState({ selectedBackground: backgroundName })
     }
 
     GetBackgroundList() {
         let backgroundOptions: JSX.Element[] = [];
         backgroundOptions.push(<option key="default" className="hidden-select" value="default">Select one</option>);
         for (var i = 0; i < this.backgroundData.length; i++) {
-            backgroundOptions.push(<option key={this.backgroundData[i].name} value={this.backgroundData[i].name}>{this.backgroundData[i].name}</option>);
+                backgroundOptions.push(<option key={this.backgroundData[i].name} value={this.backgroundData[i].name}>{this.backgroundData[i].name}</option>);
         }
         return backgroundOptions;
     }
@@ -43,10 +39,9 @@ export default class BackgroundComponent extends React.Component<any, any> {
     }
 
     ShowBackgroundChoice() {
-        let backgroundData = this.GetBackgroundData(this.state.selectedBackground)[0];
-        console.log(backgroundData);
+        let backgroundData = this.GetBackgroundData(this.props.selectedBackground)[0];
         return (<div >
-            {this.state.selectedBackground
+            {this.props.selectedBackground
                 ? <div className="background-choice">
                     <div className="background-description">
                         {backgroundData.description}
@@ -87,13 +82,12 @@ export default class BackgroundComponent extends React.Component<any, any> {
         if (skill.field.length > 0) {
             for (let o = 0; o < skill.field.length; o++) {
                 fieldOptions.push(
-                    <option key={skill.field[o]} value={skill.field[o]}>{skill.name}: {skill.field[o]}</option>
+                    <option key={skill.field[o]} value={skill.field[o]}>{skill.name} {skill.field[o]}</option>
                 )
-            }            
-        return (<select onChange={e => this.UpdateFieldSelection(e.target.value)} id="field-selector" className="skill identity">{fieldOptions}</select>);
+            }
+            return (<select onChange={e => this.UpdateFieldSelection(e.target.value)} id="field-selector" className="skill identity">{fieldOptions}</select>);
         }
-        else
-        {
+        else {
             return <div className="skill identity">{skill.name}</div>
         }
     }

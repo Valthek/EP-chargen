@@ -13,7 +13,8 @@ export default class Generator extends React.Component<any, any> {
         super(props);
         this.state = {
             character: new Character("", "", "", "", false, 0),
-            step: 0
+            step: 0,
+            selectedBackground: ""
         }
         this.handleCharacterChange = this.handleCharacterChange.bind(this);
         this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
@@ -31,11 +32,12 @@ export default class Generator extends React.Component<any, any> {
                     selectBackground={this.handleBackgroundChange}
                 />
                 {this.renderCreationStep(this.state.step)}
+                <div>{this.state.selectedBackground}</div>
                 <div className="footer-bar">
                     {this.state.step > 0
                         ? <a href="#" id="previous-step" className="button" onClick={e => this.changeStep(e, -1)}>Previous Step</a>
                         : <a href="#" id="previous-step" className="button inactive">Previous Step</a>}
-                    <div className="creation-state">{creationState[this.state.step]}</div>
+                    <div className="creation-state">{creationState[this.state.step]} ({this.state.step+1}/14)</div>
                     {this.state.step < 13
                         ? <a href="#" id="next-step" className="button" onClick={e => this.changeStep(e, 1)}>Next Step</a>
                         : <a href="#" id="next-step" className="button inactive">Next Step</a>}
@@ -108,7 +110,7 @@ export default class Generator extends React.Component<any, any> {
 
     public renderCreationStep(step: number) {
         let creationStep: JSX.Element[] = [
-            <BackgroundComponent handleBackgroundChange={this.handleBackgroundChange} />,
+            <BackgroundComponent handleBackgroundChange={this.handleBackgroundChange}  selectedBackground={this.state.selectedBackground} />,
             <CareerComponent />];
         return creationStep[step];
     }
@@ -116,7 +118,9 @@ export default class Generator extends React.Component<any, any> {
     public handleBackgroundChange(object: JSON): void {
         let tempChar = this.state.character;
         tempChar.SetBackground(object);
-        this.setState({ character: tempChar });
+        this.setState((state) =>({ character: tempChar }));
+        let newBackground = object[0].name;
+        this.setState((state) => ({ selectedBackground:  newBackground}));
     }
 }
 
