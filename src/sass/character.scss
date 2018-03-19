@@ -1,0 +1,9 @@
+.character {
+    .toggle-sheet{
+        position:absolute;
+        bottom: 10px;
+        left: 10px;
+        z-index: 1;
+        @include button($buttonBackground, $buttonFocus, $buttonText, $buttonInactiveColor, '>');
+    }
+}

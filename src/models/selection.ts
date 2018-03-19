@@ -1,6 +1,6 @@
 import { Skill } from "./skill";
 
-export class Background {
+export class Selection {
     name: string;
     description:string;
     skills: Skill[] = [];

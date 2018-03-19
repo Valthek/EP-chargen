@@ -3,12 +3,12 @@ import { Aptitude } from "./aptitude";
 import { Morph } from "./morph";
 import { Sleight } from "./sleight";
 import { DerivedStats } from "./derivedStats";
-import { Background } from "./background";
+import { Selection } from "./selection";
 
 export class Character {
     public name: string;
     public concept: string;
-    public background: Background;
+    public background: Selection[] = new Array(3);
     public faction: string;
     public morph: Morph;
     public motivation: string;
@@ -66,16 +66,41 @@ export class Character {
 
     public SetBackground(background: any) {
         let skills: Skill[] = [];
-        for (let i = 0; i < background[0].skill.length; i++) {
-            let json = background[0].skill[i];
+        for (let i = 0; i < background.skill.length; i++) {
+            let json = background.skill[i];
             let aptitudeIndex = this.finalAptitudes.findIndex(item => item.shortHand.toUpperCase() === json.attribute.toUpperCase());
             if (aptitudeIndex !== -1) {
                 let newSkill: Skill = new Skill(json.name, this.finalAptitudes[aptitudeIndex], json.rating, json.type, [""]);
                 skills.push(newSkill)
             }
         }
-        let bg = new Background(background[0].name, background[0].description, skills);
-        this.background = bg;
+        this.background[0] = new Selection(background.name, background.description, skills);
+    }
+
+    public SetCareer(career:any){
+        let skills: Skill[] = [];
+        for (let i = 0; i < career.skill.length; i++) {
+            let json = career.skill[i];
+            let aptitudeIndex = this.finalAptitudes.findIndex(item => item.shortHand.toUpperCase() === json.attribute.toUpperCase());
+            if (aptitudeIndex !== -1) {
+                let newSkill: Skill = new Skill(json.name, this.finalAptitudes[aptitudeIndex], json.rating, json.type, [""]);
+                skills.push(newSkill)
+            }
+        }
+        this.background[1] = new Selection(career.name, career.description, skills);
+    }
+
+    public SetInterest(interest:any){
+        let skills: Skill[] = [];
+        for (let i = 0; i < interest.skill.length; i++) {
+            let json = interest.skill[i];
+            let aptitudeIndex = this.finalAptitudes.findIndex(item => item.shortHand.toUpperCase() === json.attribute.toUpperCase());
+            if (aptitudeIndex !== -1) {
+                let newSkill: Skill = new Skill(json.name, this.finalAptitudes[aptitudeIndex], json.rating, json.type, [""]);
+                skills.push(newSkill)
+            }
+        }
+        this.background[2] = new Selection(interest.name, interest.description, skills);
     }
 
     public SetFaction(faction: string) {

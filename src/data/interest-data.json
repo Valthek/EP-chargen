@@ -1,0 +1,48 @@
+{
+    "interest":[
+        {
+            "name" : "Animal Handler",
+            "description": "You’ve learned to raise, train, and care for animals, particularly partially uplifted smart animals.", 
+            "skill": 
+            [
+                {"name":"Exotic Skill:", "field": [],"fieldOptions": [ "Animal Handling" ], "attribute": "SAV", "rating": 40, "type": ["Active", "Physical"]},
+                {"name":"Medicine","field": [],  "fieldOptions": [ "Veterinary" ], "attribute": "COG", "rating": 40, "type": [" Active", "Field", "Technical"]},
+                {"name":"Provoke", "field": [], "attribute": "SAV", "rating": 20, "type": ["Active", "Social"]},
+                {"name":"Know", "field": [],"fieldOptions": [  "Smart Animals" ], "attribute": "COG","rating": 40, "type": ["Know"]}
+                ]
+        },
+        {
+            "name" : "Artist/Icon",
+            "description": "You are a musician, performer, celebrity, or other type of creative or public figure.", 
+            "skill": 
+            [
+                {"name":"Deceive", "field": [], "attribute": "SAV", "rating": 40, "type": ["Active", "Social"]},
+                {"name":"Kinesics", "field": [], "attribute": "SAV",  "rating": 20, "type": ["Active", "Social"]},
+                {"name":"Provoke", "field": [], "attribute": "SAV", "rating": 40, "type": ["Active", "Social"]},
+                {"name":"Know", "field": [],"fieldOptions": [ " Dance", "Music", "Sculpture" ], "attribute": "INT", "rating": 40, "type": ["Know"]}
+            ]
+        },
+        {
+            "name" : "Async",
+            "description": "You are infected with the Watts-MacLeod strain of the exsurgent virus (p. XX), which gives you a number of unique mental talents and disadvantages. You must purchase the Psi trait in Step 10.", 
+            "skill": 
+            [
+                {"name":"Deceive", "field": [], "attribute": "SAV", "rating": 40, "type": ["Active", "Social"]},
+                {"name":"Perceive", "field": [], "attribute": "SAV", "rating": 20, "type": ["Active", "Social"]},
+                {"name":"Psi", "field": [], "attribute": "SAV", "rating": 40, "type": ["Active", "Social"]},
+                {"name":"Know", "field": [],"fieldOptions": [ "Any" ], "attribute": "INT", "rating": 40, "type": ["Know"]}
+            ]
+        },
+        {
+            "name" : "Commander",
+            "description": "You are accustomed to leadership roles as an executive, officer, elected official, or autonomist organizer.", 
+            "skill": 
+            [
+                {"name":"Interface", "field": [], "attribute": "COG","rating": 20, "type": ["Active", "Technical"]},
+                {"name":"Persuade", "field": [], "attribute": "SAV", "rating": 40, "type": ["Active", "Social"]},
+                {"name":"Provoke", "field": [], "attribute": "SAV", "rating": 40, "type": ["Active", "Social"]},
+                {"name":"Know", "field": [],"fieldOptions": [ "Administration" ], "attribute": "COG", "rating": 40, "type": ["Know"]}
+            ]
+        }
+    ]
+}

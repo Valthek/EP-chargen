@@ -2,11 +2,15 @@ import * as React from "react";
 
 import CharacterComponent from "./character-component";
 import CharacterOutlineComponent from "./character-outline-component";
+
 import BackgroundComponent from "./creation-steps/01-background-component";
 import CareerComponent from "./creation-steps/02-career-component";
+import InterestComponent from "./creation-steps/03-interest-component";
+
 import { Character } from "../models/character";
 import { DerivedStats } from "../models/derivedStats";
 import { Skill } from "../models/skill";
+import Helpers from '../helper';
 
 export default class Generator extends React.Component<any, any> {
     constructor(props: any) {
@@ -14,10 +18,14 @@ export default class Generator extends React.Component<any, any> {
         this.state = {
             character: new Character("", "", "", "", false, 0),
             step: 0,
-            selectedBackground: ""
+            selectedBackground: {},
+            selectedCareer: {},
+            selectedInterest: {}
         }
         this.handleCharacterChange = this.handleCharacterChange.bind(this);
         this.handleBackgroundChange = this.handleBackgroundChange.bind(this);
+        this.handleCareerChange = this.handleCareerChange.bind(this);
+        this.handleInterestChange = this.handleInterestChange.bind(this);
     }
 
     render() {
@@ -27,17 +35,12 @@ export default class Generator extends React.Component<any, any> {
                     character={this.state.character}
                     handleCharacterChange={this.handleCharacterChange}
                 />
-                <CharacterOutlineComponent
-                    character={this.state.character}
-                    selectBackground={this.handleBackgroundChange}
-                />
                 {this.renderCreationStep(this.state.step)}
-                <div>{this.state.selectedBackground}</div>
                 <div className="footer-bar">
                     {this.state.step > 0
                         ? <a href="#" id="previous-step" className="button" onClick={e => this.changeStep(e, -1)}>Previous Step</a>
                         : <a href="#" id="previous-step" className="button inactive">Previous Step</a>}
-                    <div className="creation-state">{creationState[this.state.step]} ({this.state.step+1}/14)</div>
+                    <div className="creation-state">{creationState[this.state.step]} ({this.state.step + 1}/14)</div>
                     {this.state.step < 13
                         ? <a href="#" id="next-step" className="button" onClick={e => this.changeStep(e, 1)}>Next Step</a>
                         : <a href="#" id="next-step" className="button inactive">Next Step</a>}
@@ -110,17 +113,38 @@ export default class Generator extends React.Component<any, any> {
 
     public renderCreationStep(step: number) {
         let creationStep: JSX.Element[] = [
-            <BackgroundComponent handleBackgroundChange={this.handleBackgroundChange}  selectedBackground={this.state.selectedBackground} />,
-            <CareerComponent />];
+            // pass current backgroundObject & function to change background Object
+            <BackgroundComponent HandleSelectionChange={this.handleBackgroundChange}
+                selectedOption={this.state.selectedBackground}
+                selectorName="background" />,
+            <CareerComponent HandleSelectionChange={this.handleCareerChange}
+                selectedOption={this.state.selectedCareer}
+                selectorName="career" />,
+            <InterestComponent HandleSelectionChange={this.handleInterestChange}
+                selectedOption={this.state.selectedInterest}
+                selectorName="interest" />];
         return creationStep[step];
     }
 
-    public handleBackgroundChange(object: JSON): void {
+    public handleBackgroundChange(object: any): void {
         let tempChar = this.state.character;
         tempChar.SetBackground(object);
-        this.setState((state) =>({ character: tempChar }));
-        let newBackground = object[0].name;
-        this.setState((state) => ({ selectedBackground:  newBackground}));
+        this.setState((state) => ({ character: tempChar }));
+        this.setState((state) => ({ selectedBackground: object }));
+    }
+
+    public handleCareerChange(object: any): void {
+        let tempChar = this.state.character;
+        tempChar.SetCareer(object);
+        this.setState((state) => ({ character: tempChar }));
+        this.setState((state) => ({ selectedCareer: object }));
+    }
+
+    public handleInterestChange(object: any): void {
+        let tempChar = this.state.character;
+        tempChar.SetInterest(object);
+        this.setState((state) => ({ character: tempChar }));
+        this.setState((state) => ({ selectedInterest: object }));
     }
 }
 

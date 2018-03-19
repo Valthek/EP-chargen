@@ -1,29 +1,49 @@
 {
-    "background":[
-    {"name" : "Colonist",
-    "description": "You were an original settler of Earth orbit, Luna, Mars, or a smaller outpost elsewhere, before the Fall.", 
+    "career":[
+    {"name" : "Academic",
+    "description": "You devote your efforts to the pursuit of knowledge.", 
     "skill": 
         [
-            {"name":"Free Fall", "attribute": "SOM", "rating": 40, "type": ["Active", "Physical"]},
-            {"name":"Hardware", "field": [ "Aerospace", "Electronics", "Industrial" ], "attribute": "COG", "rating": 40, "type": ["Active", "Technical"]},
-            {"name":"Interface", "attribute": "COG","rating": 30, "type": ["Active", "Technical"]},
-            {"name":"Pilot", "field": [ "Air", "Ground", "Nautical", "Space" ], "attribute": "REF","rating": 30, "type": ["Active", "Vehicle"]},
-            {"name":"Survival", "attribute": "INT", "rating": 30, "type": ["Active", "Mental"]},
-            {"name":"Know", "field": [  "Administration", "Flight Crew Ops", "Hab Ops" ], "attribute": "INT","rating": 60, "type": ["Know"]},
-            {"name":"Know", "field": [ "Botany", "Chemistry", "Engineering", "Physics"  ], "attribute": "COG","rating": 30, "type": ["Know"]}
+            {"name":"Interface","field": [], "attribute": "COG", "rating": 30, "type": [" Active", "Technical "]},
+            {"name":"Research","field": [], "fieldOptions": [ "Aerospace", "Electronics", "Industrial" ], "attribute": "COG", "rating": 60, "type": ["Active", "Technical"]},
+            {"name":"Know","field": [], "fieldOptions": [ "Any" ], "attribute": "INT","rating": 60, "type": ["Know"]},
+            {"name":"Know","field": [], "fieldOptions": [ "Any" ], "attribute": "INT","rating": 40, "type": ["Know"]},
+            {"name":"Know","field": [], "fieldOptions": [ "Any"  ], "attribute": "COG","rating": 30, "type": ["Know"]}
         ]
     },
-    {"name" : "Enclaver ",
-    "description": "On Earth, you lived a life of precarious but protected stability in a defended enclave. ", 
+    {"name" : "Covert Operative",
+    "description": "You are a spy, infiltrator, thief, or undercover agent, skilled at accessing places you don’t belong.", 
     "skill": 
         [
-            {"name":"Free Fall", "attribute": "SOM", "rating": 40, "type": ["Active", "Physical"]},
-            {"name":"Hardware", "field": [ "Aerospace", "Electronics", "Industrial" ], "attribute": "COG", "rating": 40, "type": ["Active", "Technical"]},
-            {"name":"Interface", "attribute": "COG","rating": 30, "type": ["Active", "Technical"]},
-            {"name":"Pilot", "field": [ "Air", "Ground", "Nautical", "Space" ], "attribute": "REF","rating": 30, "type": ["Active", "Vehicle"]},
-            {"name":"Survival", "attribute": "INT", "rating": 30, "type": ["Active", "Mental"]},
-            {"name":"Know", "field": [  "Administration", "Flight Crew Ops", "Hab Ops" ], "attribute": "INT","rating": 60, "type": ["Know"]},
-            {"name":"Know", "field": [ "Botany", "Chemistry", "Engineering", "Physics"  ], "attribute": "COG","rating": 30, "type": ["Know"]}
+            {"name":"Deceive","field": [],  "attribute": "SAV", "rating": 40, "type": ["Active", "Social"]},
+            {"name":"Infiltrate","field": [], "attribute": "REF", "rating": 60, "type": ["Active", "Physical"]},
+            {"name":"Infosec","field": [],  "attribute": "COG","rating": 30, "type": ["Active", "Technical"]},
+            {"name":"Know","field": [],  "fieldOptions": [ "Security Ops", "Smuggling", "Spycraft" ], "attribute": "COG","rating": 60, "type": ["Know"]},
+            {"name":"Know","field": [],  "fieldOptions": [ "Black Markets", "Current Events", "Politics" ], "attribute": "COG","rating": 30, "type": ["Know"]}
+        ]
+    },
+    {"name" : "Enforcer ",
+    "description": "You are a spy, infiltrator, thief, or undercover agent, skilled at accessing places you don’t belong.", 
+    "skill": 
+        [
+            {"name":"Fray","field": [],  "attribute": "SOM", "rating": 30, "type": ["Active", "Combat"]},
+            {"name":"Guns","field": [],  "attribute": "REF", "rating": 20, "type": ["Active", "Combat"]},
+            {"name":"Melee","field": [],  "attribute": "SOM","rating": 50, "type": ["Active", "Combat"]},
+            {"name":"Provoke","field": [],  "attribute": "SAV","rating": 30, "type": ["Active", "Social "]},
+            {"name":"Know","field": [],  "fieldOptions": [ "Bodyguarding", "Racketeering","Security Ops"], "attribute": "COG","rating": 60, "type": ["Know"]},
+            {"name":"Know", "field": [], "fieldOptions": [ "Cartel Politics", "Gambling", "Night Clubs " ], "attribute": "COG","rating": 30, "type": ["Know"]}
+        ]
+    },
+    {"name" : "Explorer",
+    "description": "You’ve walked on alien worlds and seen things with your own eyes that others wouldn’t believe", 
+    "skill": 
+        [
+            {"name":"Athletics","field": [],  "attribute": "SOM", "rating": 30, "type": ["Active", "Physical"]},
+            {"name":"Medicine","field": [],  "fieldOptions": [ "Paramedic" ], "attribute": "COG", "rating": 20, "type": [" Active", "Field", "Technical"]},
+            {"name":"Pilot","field": [], "fieldOptions": [ "Air", "Ground", "Nautical", "Space" ], "attribute": "REF","rating": 20, "type": ["Active", "Vehicle"]},
+            {"name":"Survival","field": [], "attribute": "INT", "rating": 60, "type": [" Active", "Physical "]},
+            {"name":"Know","field": [],  "fieldOptions": [ "First-Contact Ops", "Gatecrashing", "Surveying " ], "attribute": "COG","rating": 60, "type": ["Know"]},
+            {"name":"Know","field": [],  "fieldOptions": [ "Astrobiology", "Geology", "Xenoarcheology" ], "attribute": "COG","rating": 30, "type": ["Know"]}
         ]
     }
     ]
